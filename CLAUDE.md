@@ -2,30 +2,28 @@
 
 ## What We're Building
 
-**Moodify** is a mental health and mood tracking web app (PWA) for users aged 16–35. It sits between two competitors:
-- **Daylio** — great UX, no clinical tools
-- **Moodfit** — clinical depth, terrible discoverability
+**Moodify** is a mental health and mood tracking PWA (Progressive Web App) for users aged 16–35.
+Tagline: **"Your Digital Sanctuary"** — Track your mood. Understand yourself.
+
+It sits between two competitors:
+- **Daylio** — great UX, gamification, no clinical tools
+- **Moodfit** — clinical depth, terrible UX and discoverability
 
 Moodify combines both, plus AI-powered suggestions neither competitor offers.
-
-**One-liner:** Make mental health self-care feel as routine as checking the weather.
 
 ---
 
 ## Skills — Always Read Before Working
 
-> These are mandatory. Read the relevant skill before starting any work in that area.
+> Mandatory. Read the relevant skill before starting any work in that area.
 
 | Skill | When to read it |
 |---|---|
 | `shadcn` | Before adding, fixing, styling, or composing any shadcn component |
-| `ui-ux-pro-max` | Before making any design decision — colors, layout, spacing, typography |
-| `frontend-design` | Before building any new screen, page, or component — for aesthetic direction, motion, and visual quality |
+| `ui-ux-pro-max` | Before any design decision — colors, layout, spacing, typography |
+| `frontend-design` | Before building any new screen or component — aesthetic direction, motion, visual quality |
 
-All three skills work together:
-- `ui-ux-pro-max` → UX decisions and information hierarchy
-- `frontend-design` → visual aesthetic, typography, motion, atmosphere
-- `shadcn` → correct component implementation
+All three work together: `ui-ux-pro-max` → UX hierarchy, `frontend-design` → visual aesthetic, `shadcn` → component implementation.
 
 ---
 
@@ -35,9 +33,9 @@ All three skills work together:
 Next.js 14 (App Router)        → framework
 next-pwa                        → PWA (service worker, manifest, installable)
 Tailwind CSS                    → styling
-shadcn/ui                       → component library (src/components/ui/)
-Framer Motion                   → animations (breathing exercises, transitions)
-Zustand                         → client state
+shadcn/ui (Nova preset)         → component library (src/components/ui/)
+Framer Motion                   → animations (breathing, transitions, confirmation)
+Zustand                         → client state + draft mood entry persistence
 Supabase                        → auth (email + Google OAuth) + PostgreSQL
 Drizzle ORM                     → type-safe DB queries and migrations
 Vercel AI SDK (ai)              → generateObject for structured AI responses
@@ -51,192 +49,44 @@ TypeScript (strict)             → language
 
 ---
 
-## PWA Mobile-First Design Rules
+## Figma Design Reference
 
-Moodify is a PWA used primarily on phones. Every screen must be designed and built mobile-first. These rules are non-negotiable.
+**Prototype link:** https://www.figma.com/proto/6vdpLrYCWUPflvdUOinY3x/Untitled?node-id=9-56&p=f&t=v337jNvcRAasiwI4-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1
 
-### Breakpoints
-```
-Default (no prefix)  → 375px   mobile portrait  ← design starts here
-sm:                  → 640px   large phone / landscape
-md:                  → 768px   tablet
-lg:                  → 1024px  desktop (nice to have, not primary)
-```
-Never design for desktop first and shrink down. Always build 375px up.
+**11 designed screens:** Login, Sign Up, Dashboard, Log Mood, Insights, Year in Pixels, Suggestions, PHQ-9 Assessment, Clinical Check-in, Export Data, Results, Settings
 
-### Touch Targets
-- Every tappable element must be **minimum 44×44px** — this includes buttons, tags, icons, nav items
-- Use `min-h-[44px] min-w-[44px]` on anything interactive
-- Add `p-3` or more padding around small icons so the tap area is generous
-- Never place two tappable elements closer than 8px apart
-
-### Safe Areas (installed PWA)
-When installed to home screen, the OS UI overlaps the app. Always account for this:
-```css
-/* in globals.css */
-:root {
-  --sat: env(safe-area-inset-top);
-  --sab: env(safe-area-inset-bottom);
-  --sal: env(safe-area-inset-left);
-  --sar: env(safe-area-inset-right);
-}
-```
-```tsx
-// Bottom nav must clear the home indicator on iOS
-<nav className="pb-[env(safe-area-inset-bottom)] ...">
-```
-Always use `pb-[env(safe-area-inset-bottom)]` on the bottom navigation bar.
-Always use `pt-[env(safe-area-inset-top)]` on the top header/status bar area.
-
-### Layout Patterns for PWA
-- **Bottom navigation** — primary nav lives at the bottom, thumb-reachable. Never top nav on mobile.
-- **Full-screen pages** — each page fills the viewport. Use `min-h-[100dvh]` not `min-h-screen` (dvh accounts for mobile browser chrome).
-- **Scrollable content** — content scrolls between a fixed header and fixed bottom nav. Pattern:
-  ```tsx
-  <div className="flex flex-col min-h-[100dvh]">
-    <header className="fixed top-0 ... pt-[env(safe-area-inset-top)]" />
-    <main className="flex-1 overflow-y-auto mt-[header-height] mb-[nav-height] px-4" />
-    <nav className="fixed bottom-0 ... pb-[env(safe-area-inset-bottom)]" />
-  </div>
-  ```
-- **Sheets over modals** — use shadcn `Sheet` (slides up from bottom) instead of centered `Dialog` for mobile actions. Bottom sheets feel native on mobile.
-- **Full-width buttons** — primary action buttons are `w-full` on mobile.
-- **Cards fill width** — no fixed-width cards on mobile. Use `w-full` with `px-4` page padding.
-
-### Typography for Mobile
-- Minimum body font size: `text-base` (16px) — never smaller on mobile, prevents iOS zoom on inputs
-- Input fields must be `text-base` or larger to prevent iOS auto-zoom on focus
-- Line height: `leading-relaxed` for body text — tight line heights are hard to read on small screens
-- Headings: scale down on mobile. Use `text-2xl md:text-4xl` patterns
-
-### Inputs & Forms
-- All `<input>` and `<textarea>` must have `text-base` or `text-[16px]` to prevent iOS zoom
-- Use `inputMode` attribute for correct mobile keyboards:
-  ```tsx
-  <Input inputMode="numeric" />   // number pad
-  <Input inputMode="email" />     // email keyboard
-  <Input type="text" />           // default
-  ```
-- Form fields should be spaced `gap-4` minimum — fat fingers need room
-
-### Performance (PWA = must be fast)
-- Images: always use `next/image` with explicit `width` and `height`
-- Never block the main thread on page load — defer non-critical JS
-- Skeleton screens on every data fetch — never show blank space
-- Animate with `transform` and `opacity` only — never animate `height`, `width`, or `margin` (causes reflow)
-- Use `will-change: transform` on Framer Motion elements that animate frequently (breathing circle)
-
-### PWA-Specific UX Patterns
-- **Install prompt** — show a custom "Add to Home Screen" banner on first visit for iOS users (iOS doesn't show the native prompt automatically)
-- **Offline state** — show a subtle banner when offline: `"You're offline — your mood will sync when you reconnect"`
-- **Splash screen** — configure in manifest.json with Moodify's brand color so the launch screen looks native
-- **No hover-only interactions** — never put critical functionality only on hover. Hover states are progressive enhancement only.
-- **Pull to refresh** — do not implement unless explicitly required. PWA scroll feels different from native.
-- **Viewport meta** — must be in layout.tsx:
-  ```tsx
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  ```
-  `viewport-fit=cover` is required for safe area insets to work on iOS.
-
----
-
-## Project Structure
-
-```
-moodify/
-├── src/
-│   ├── app/
-│   │   ├── (auth)/
-│   │   │   ├── login/page.tsx
-│   │   │   └── register/page.tsx
-│   │   ├── (app)/
-│   │   │   ├── layout.tsx              # Fixed bottom nav + safe area handling
-│   │   │   ├── page.tsx                # Home: log today's mood
-│   │   │   ├── history/page.tsx        # Calendar + Year in Pixels
-│   │   │   ├── insights/page.tsx       # Charts and analytics
-│   │   │   ├── tools/
-│   │   │   │   ├── breathing/page.tsx
-│   │   │   │   ├── cbt/page.tsx
-│   │   │   │   └── gratitude/page.tsx
-│   │   │   ├── assessments/page.tsx
-│   │   │   └── settings/page.tsx
-│   │   ├── api/
-│   │   │   └── suggestions/route.ts
-│   │   └── layout.tsx                  # viewport meta with viewport-fit=cover
-│   ├── components/
-│   │   ├── mood/
-│   │   │   ├── MoodPicker.tsx          # 5 emoji mood selector, min 44px targets
-│   │   │   ├── EmotionTags.tsx         # shadcn Toggle + ToggleGroup
-│   │   │   ├── ActivityTags.tsx        # shadcn Toggle + ToggleGroup
-│   │   │   └── MoodLogForm.tsx
-│   │   ├── insights/
-│   │   │   ├── MoodTrendChart.tsx      # Recharts, mobile-sized
-│   │   │   ├── ActivityCorrelation.tsx
-│   │   │   └── YearInPixels.tsx        # responsive dot grid
-│   │   ├── tools/
-│   │   │   ├── BreathingGuide.tsx      # Framer Motion, full-screen on mobile
-│   │   │   ├── CBTThoughtRecord.tsx
-│   │   │   └── GratitudeJournal.tsx
-│   │   ├── assessments/
-│   │   │   ├── PHQ9Form.tsx
-│   │   │   └── GAD7Form.tsx
-│   │   ├── pwa/
-│   │   │   ├── InstallPrompt.tsx       # Custom iOS install banner
-│   │   │   └── OfflineBanner.tsx       # Offline state indicator
-│   │   └── ui/                         # shadcn components — do not edit directly
-│   ├── lib/
-│   │   ├── supabase/
-│   │   │   ├── client.ts
-│   │   │   └── server.ts
-│   │   ├── db/
-│   │   │   ├── schema.ts
-│   │   │   ├── index.ts
-│   │   │   └── queries/
-│   │   │       ├── mood.ts
-│   │   │       ├── assessments.ts
-│   │   │       └── gratitude.ts
-│   │   ├── store/
-│   │   │   └── moodStore.ts
-│   │   └── utils/
-│   │       ├── pdf.ts
-│   │       └── export.ts
-│   ├── hooks/
-│   │   ├── useMoodLog.ts
-│   │   ├── useInsights.ts
-│   │   └── usePWAInstall.ts            # detects iOS, shows install prompt
-│   └── types/
-│       └── index.ts
-├── public/
-│   ├── manifest.json
-│   └── icons/
-├── docs/
-│   ├── deliverable-1.pdf
-│   └── deliverable-2.pdf
-├── drizzle/
-│   └── migrations/
-├── drizzle.config.ts
-└── CLAUDE.md
-```
-
----
-
-## Reference Documents
-
-- `docs/deliverable-1.pdf` — problem statement, stakeholder analysis, competitive analysis (Daylio vs Moodfit)
-- `docs/deliverable-2.pdf` — full functional/non-functional requirements, use cases (UC-01 to UC-05), constraints, Figma screenshots
-
-When implementing any feature, reference the relevant use case from deliverable-2.pdf for the exact main flow, alternative flows, and exception flows.
-
----
-
-## Figma
-
-The Moodify Figma file contains the full design. Use the Figma MCP to read designs directly:
-
-1. Select a frame in Figma → right click → Copy link to selection
-2. Paste into your prompt: `"Implement this screen: [link]. Use our Next.js + Tailwind + shadcn stack, mobile-first."`
+**Design language:** Warm earthy tones, soft yellows and creams, calming visual language. The design uses a sidebar nav on desktop and bottom nav on mobile.
 
 **Always read `frontend-design` + `ui-ux-pro-max` + `shadcn` skills before implementing any screen.**
+
+To use Figma MCP with Claude Code:
+1. Select a frame in Figma → right click → Copy link to selection
+2. Paste into prompt: `"Implement this screen: [link]. Use Next.js + Tailwind + shadcn, mobile-first."`
+
+---
+
+## All Features (FR = Functional Requirement)
+
+| ID | Feature | Status | Notes |
+|---|---|---|---|
+| FR-01 | Auth — email/password + Google OAuth | MVP | Supabase Auth |
+| FR-02 | Mood Logging — 1–5 emoji scale, ≤30 seconds, ≤3 taps | MVP | Multiple entries/day allowed |
+| FR-03 | Emotion & Activity Tagging | MVP | Both optional |
+| FR-04 | Optional Journal Note — max 500 chars | MVP | |
+| FR-05 | Mood History & Calendar View (Year in Pixels) | MVP | 365 colored squares |
+| FR-06 | Analytics Dashboard — weekly/monthly/yearly | MVP | Min 3 entries to show |
+| FR-07 | AI-Powered Personalized Suggestions | MVP | Min 5 entries to personalize |
+| FR-08 | CBT Tools & Thought Records | MVP | Guided structured prompts |
+| FR-09 | Breathing Exercises — free, no login wall | MVP | Box, 4-7-8, simple |
+| FR-10 | Gratitude Journal — min 3 items prompt | MVP | Separate from mood logs |
+| FR-11 | Clinical Assessments — PHQ-9 & GAD-7 | MVP | 24hr cooldown between retakes |
+| FR-12 | Gamification — Streaks & Achievement Badges | MVP | 7-day, 30-log milestones |
+| FR-13 | Therapist Report Generation — PDF | MVP | Client-side jsPDF |
+| FR-14 | Data Export — CSV + PDF, free | MVP | Web Share API for sharing |
+| FR-15 | Push Notification Reminders — configurable | MVP | Web Push API |
+| — | Mindfulness / Meditation | MVP | Simple guided sessions |
+| — | Medication Tracking | v2 deferred | |
+| — | Nervous System Regulation Tool | v2 deferred | |
 
 ---
 
@@ -246,39 +96,45 @@ The Moodify Figma file contains the full design. Use the Figma MCP to read desig
 // src/lib/db/schema.ts
 import { pgTable, uuid, text, integer, boolean, timestamp, date, jsonb } from 'drizzle-orm/pg-core'
 
+// Auth is handled by Supabase (auth.users) — all tables reference auth.uid()
+
 export const moodEntries = pgTable('mood_entries', {
   id: uuid('id').primaryKey().defaultRandom(),
   userId: uuid('user_id').notNull(),
   moodLevel: integer('mood_level').notNull(),   // 1-5
   note: text('note'),                           // max 500 chars, enforced in app
+  isDraft: boolean('is_draft').default(false),  // auto-saved draft support (UC-01 E2)
   loggedAt: timestamp('logged_at').defaultNow(),
 })
 
 export const emotionTags = pgTable('emotion_tags', {
   id: uuid('id').primaryKey().defaultRandom(),
-  entryId: uuid('entry_id').notNull(),
+  entryId: uuid('entry_id').notNull(),          // references mood_entries
   tag: text('tag').notNull(),
+  // Values: 'anxious' | 'happy' | 'tired' | 'calm' | 'sad' | 'energetic' | 'overwhelmed' | etc.
 })
 
 export const activityTags = pgTable('activity_tags', {
   id: uuid('id').primaryKey().defaultRandom(),
   entryId: uuid('entry_id').notNull(),
   activity: text('activity').notNull(),
+  // Values: 'exercise' | 'sleep' | 'social' | 'work' | 'nature' | 'meditation' | etc.
 })
 
 export const assessments = pgTable('assessments', {
   id: uuid('id').primaryKey().defaultRandom(),
   userId: uuid('user_id').notNull(),
   type: text('type').notNull(),                 // 'PHQ9' | 'GAD7'
-  answers: jsonb('answers').notNull(),
+  answers: jsonb('answers').notNull(),          // array of 0-3 integer scores
   score: integer('score').notNull(),
+  severityLabel: text('severity_label').notNull(), // 'Minimal' | 'Mild' | 'Moderate' | 'Moderately Severe' | 'Severe'
   takenAt: timestamp('taken_at').defaultNow(),
 })
 
 export const gratitudeLogs = pgTable('gratitude_logs', {
   id: uuid('id').primaryKey().defaultRandom(),
   userId: uuid('user_id').notNull(),
-  items: text('items').array().notNull(),       // min 3 items enforced in app
+  items: text('items').array().notNull(),       // min 3 items, enforced in app
   loggedAt: timestamp('logged_at').defaultNow(),
 })
 
@@ -288,7 +144,7 @@ export const suggestions = pgTable('suggestions', {
   content: text('content').notNull(),
   type: text('type').notNull(),                 // 'breathing' | 'journaling' | 'activity'
   engaged: boolean('engaged').default(false),
-  helpful: boolean('helpful'),
+  helpful: boolean('helpful'),                  // null = no feedback yet
   createdAt: timestamp('created_at').defaultNow(),
 })
 
@@ -298,6 +154,21 @@ export const streaks = pgTable('streaks', {
   longestStreak: integer('longest_streak').default(0),
   lastLoggedDate: date('last_logged_date'),
 })
+
+export const achievements = pgTable('achievements', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  userId: uuid('user_id').notNull(),
+  badge: text('badge').notNull(),
+  // Values: '7_day_streak' | '30_day_streak' | '30_logs' | '100_logs' | 'first_assessment' | etc.
+  awardedAt: timestamp('awarded_at').defaultNow(),
+})
+
+export const notifications = pgTable('notifications', {
+  userId: uuid('user_id').primaryKey(),
+  isEnabled: boolean('is_enabled').default(false),
+  scheduledTime: text('scheduled_time'),        // e.g. "20:00" — user's preferred reminder time
+  pushSubscription: jsonb('push_subscription'), // Web Push subscription object
+})
 ```
 
 ### RLS — apply to every table, no exceptions
@@ -305,32 +176,154 @@ export const streaks = pgTable('streaks', {
 alter table mood_entries enable row level security;
 create policy "own data only" on mood_entries
   for all using (auth.uid() = user_id);
--- repeat for every table
+-- Repeat this pattern for every table
 ```
 
 ---
 
-## shadcn Component Map
+## Navigation Structure
 
-> Always read the `shadcn` skill before using these.
+### Desktop (sidebar)
+```
+Moodify
+├── Dashboard       ← home, mood log widget + insights preview
+├── Log Mood        ← dedicated mood logging flow
+├── Insights        ← charts, Year in Pixels, activity correlations
+├── Suggestions     ← AI wellness suggestion cards
+├── Assessments     ← PHQ-9, GAD-7
+├── Export          ← PDF/CSV export + Share with Therapist
+└── Settings        ← notifications, account, data deletion
+```
 
-| Moodify Feature | shadcn Component |
-|---|---|
-| Mood log form | `Card` + `Button` + `Textarea` |
-| Emotion / activity tags | `Toggle` + `ToggleGroup` |
-| Assessment questions | `Progress` + `Card` |
-| Suggestion cards | `Card` + `Badge` |
-| Mobile action menus | `Sheet` (bottom sheet, not Dialog) |
-| Export / confirm dialogs | `Dialog` |
-| Loading states | `Skeleton` |
-| Crisis alert banner | `Alert` |
-| Settings panels | `Tabs` |
-| Push notification prompt | `Toast` |
-| Auth forms | `Input` + `Button` + `Card` |
+### Mobile (bottom nav — 5 tabs max)
+```
+Home | Insights | + (Log Mood) | Tools | Settings
+```
+The "+" button is center-prominent, floating — the primary action on mobile.
 
 ---
 
-## AI Suggestions (FR-07)
+## PWA Mobile-First Design Rules
+
+This is a PWA used primarily on phones. Every screen must be built mobile-first.
+
+### Breakpoints
+```
+Default (no prefix)  → 375px   mobile portrait  ← always start here
+sm:                  → 640px   large phone / landscape
+md:                  → 768px   tablet
+lg:                  → 1024px  desktop (sidebar nav appears here)
+```
+
+### Touch & Layout
+- Every tappable element: minimum **44×44px** (`min-h-[44px] min-w-[44px]`)
+- Full-height: use `min-h-[100dvh]` not `min-h-screen`
+- Primary buttons: `w-full` on mobile
+- Action menus: shadcn `Sheet` (bottom sheet) not `Dialog` on mobile
+
+### Safe Areas (installed PWA)
+```tsx
+// Required in root layout
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+// Bottom nav
+<nav className="pb-[env(safe-area-inset-bottom)] ...">
+
+// Top header
+<header className="pt-[env(safe-area-inset-top)] ...">
+```
+
+### Inputs
+- All `<input>` / `<textarea>`: minimum `text-base` (16px) — prevents iOS zoom on focus
+- Use `inputMode` for correct mobile keyboards (`numeric`, `email`, etc.)
+
+### Performance
+- `next/image` for all images with explicit dimensions
+- Skeleton screens on every data fetch — never blank space
+- Animate only `transform` and `opacity` — never layout properties
+
+---
+
+## Year in Pixels — Color Scheme
+
+From the Figma design, Year in Pixels uses **4 emotion categories** (not the 5-level mood scale):
+
+| Color | Emotion Category | Tailwind |
+|---|---|---|
+| Green | Joyful / Calm | `#4CAF82` |
+| Gold | Energetic / Productive | `#F5A623` |
+| Gray | Neutral / Tired | `#9E9E9E` |
+| Pink | Anxious / Overwhelmed | `#E991A0` |
+| Empty | No entry that day | `#E5E7EB` |
+
+Map mood entries to these categories based on primary emotion tag. If no emotion tag, fall back to mood level (4-5 = green, 3 = gold, 2 = gray, 1 = pink).
+
+---
+
+## Mood Scale (5-level)
+
+| Level | Label | Emoji | Color |
+|---|---|---|---|
+| 1 | Awful | 😞 | `#EF4444` |
+| 2 | Bad | 😕 | `#F97316` |
+| 3 | Neutral | 😐 | `#EAB308` |
+| 4 | Good | 🙂 | `#84CC16` |
+| 5 | Great | 😄 | `#22C55E` |
+
+---
+
+## Key Feature Logic
+
+### Mood Logging (UC-01)
+- Minimum valid entry: mood level only (emotion/activity tags are optional)
+- Multiple entries allowed per day — analytics averages them for daily score
+- Auto-save draft to Zustand store on every change — restore on re-open (exception E2)
+- On save: validate mood level → save to DB → update streak → check achievements → trigger suggestions if ≥5 entries → show confirmation animation
+
+### Analytics (UC-02)
+- Minimum 3 entries to show charts — otherwise show "Keep logging" prompt
+- Dashboard default: weekly view with trend line, avg mood, mood distribution, streak
+- Activity correlation: bar chart ranking activities by avg associated mood score
+- AI pattern detection: surface observations like "Your mood drops on Mondays"
+- Year in Pixels: 365 colored squares, tap a day to see entry detail in a side panel
+
+### AI Suggestions (UC-03)
+- Trigger: automatically after saving a mood entry, OR manual visit to Suggestions tab
+- Minimum 5 entries to personalize — below that show generic wellness tips
+- Context sent to AI: last 7 days of mood levels, trend direction, emotion tags, activity tags, time of day
+- Output: 1-3 suggestion cards (type: breathing | journaling | activity)
+- After user engages: ask "Did this help?" thumbs up/down → log feedback → improve future suggestions
+- If user dismisses 5+ suggestions in a row: show short preference survey
+
+### Assessments (UC-04)
+- 24-hour cooldown between retakes of the same assessment type
+- Disclaimer screen before every assessment: "This is a standard screening tool, not a diagnosis"
+- One question at a time with progress bar
+- Crisis resources auto-show if PHQ-9 score ≥ 20 OR question 9 (Q9) answered non-zero
+- User must acknowledge crisis resources before seeing results
+- Results saved to assessment history with trend comparison to last score
+
+### Export & Share (UC-05)
+- PDF generated client-side with jsPDF — no server needed
+- Use Web Share API (`navigator.share()`) to open native share sheet
+- PDF must include disclaimer: "This is not a medical record"
+- CSV columns: date, time, mood level, emotions, activities, notes, assessment scores
+- Data deletion option available (permanent, irreversible, GDPR-compliant)
+
+### Streaks & Achievements (FR-12)
+- Streak increments if user logs at least 1 mood entry per calendar day
+- Milestone badges: 7-day streak, 30-day streak, 30 total logs, 100 total logs, first assessment
+- Show achievement unlock animation on badge award
+
+### Push Notifications (FR-15)
+- Use Web Push API via next-pwa service worker
+- User sets preferred reminder time in Settings
+- iOS: only works when app is installed to home screen (iOS 16.4+)
+- Show install prompt banner to iOS users who haven't installed the app
+
+---
+
+## AI Suggestions API
 
 ```typescript
 // src/app/api/suggestions/route.ts
@@ -342,7 +335,7 @@ const suggestionSchema = z.object({
     type: z.enum(['breathing', 'journaling', 'activity']),
     title: z.string(),
     description: z.string(),
-    duration: z.string(),
+    duration: z.string(),           // e.g. "5 minutes"
   })).min(1).max(3)
 })
 
@@ -357,39 +350,59 @@ export async function POST(req: Request) {
 }
 ```
 
-Requires minimum 5 mood entries. Below that show generic wellness tips without calling the API.
-
 ---
 
 ## Breathing Exercises (FR-09)
 
 ```tsx
-// Full-screen on mobile — use min-h-[100dvh]
+// Full-screen on mobile (min-h-[100dvh])
 // Framer Motion animates circle per phase
-// Web Audio API plays tone at each transition
-// Screen Wake Lock keeps display on
+// Web Audio API plays soft tone at phase transitions
+// Screen Wake Lock keeps display on during session
 
-const phases = [
-  { label: 'Inhale', duration: 4, scale: 1.4 },
-  { label: 'Hold',   duration: 7, scale: 1.4 },
-  { label: 'Exhale', duration: 8, scale: 1.0 },
-]
+const exercises = {
+  box:      [{ label: 'Inhale', duration: 4 }, { label: 'Hold', duration: 4 }, { label: 'Exhale', duration: 4 }, { label: 'Hold', duration: 4 }],
+  '4-7-8':  [{ label: 'Inhale', duration: 4 }, { label: 'Hold', duration: 7 }, { label: 'Exhale', duration: 8 }],
+  simple:   [{ label: 'Inhale', duration: 4 }, { label: 'Exhale', duration: 4 }],
+}
 ```
 
-Available: Box Breathing (4-4-4-4), 4-7-8, simple Inhale/Exhale.
-Free, no login required (FR-09 hard constraint).
+Free, accessible from home screen, no login required (FR-09 hard constraint).
+
+---
+
+## shadcn Component Map
+
+> Always read the `shadcn` skill before using these.
+
+| Feature | shadcn Component |
+|---|---|
+| Mood log form | `Card` + `Button` + `Textarea` |
+| Emotion / activity tags | `Toggle` + `ToggleGroup` |
+| Assessment questions | `Progress` + `Card` |
+| Suggestion cards | `Card` + `Badge` |
+| Mobile action menus | `Sheet` (bottom sheet, not Dialog) |
+| Export / confirm dialogs | `Dialog` |
+| Loading states | `Skeleton` |
+| Crisis alert + achievement | `Alert` |
+| Settings panels | `Tabs` |
+| Push notification / install prompt | `Toast` |
+| Auth forms | `Input` + `Button` + `Card` |
+| Streak display | `Badge` |
+| Assessment progress | `Progress` |
 
 ---
 
 ## Hard Constraints — Never Break These
 
-1. **Core features always free:** mood logging, breathing, analytics, data export
+1. **Core features always free:** mood logging, breathing, analytics, data export, assessments
 2. **No ads, no third-party data sharing — ever**
-3. **Every PHQ-9/GAD-7 result screen** must include disclaimer: results are not a clinical diagnosis
+3. **Every PHQ-9/GAD-7 result screen** must show disclaimer: results are not a clinical diagnosis
 4. **Crisis resources must auto-show** if PHQ-9 score ≥ 20 OR question 9 answered non-zero — user must acknowledge before seeing results
-5. **Data deletion in settings** — full purge within 30 days (GDPR)
+5. **Data deletion available in settings** — full purge within 30 days (GDPR)
 6. **Premium pricing** ≤ Rs. 800/month at launch
-7. **RLS enabled on every Supabase table** — no exceptions
+7. **RLS must be enabled on every Supabase table** — no exceptions
+8. **Breathing exercises accessible without login** from home screen
 
 ---
 
@@ -401,31 +414,45 @@ Free, no login required (FR-09 hard constraint).
 - Drizzle for all DB queries — no raw SQL unless unavoidable
 - **Mobile-first always** — write base styles for 375px, then `sm:` `md:` `lg:` upward
 - **Use `min-h-[100dvh]`** not `min-h-screen` for full-height layouts
-- **All touch targets min 44×44px** — use `min-h-[44px] min-w-[44px]`
+- **All touch targets min 44×44px**
 - **All inputs `text-base` minimum** — prevents iOS zoom on focus
 - **Bottom sheets over modals** on mobile — use shadcn `Sheet`
 - **Animate only `transform` and `opacity`** — never animate layout properties
-- Every async operation needs a loading state — use shadcn `Skeleton`
+- Every async operation: loading state with shadcn `Skeleton`
 - Error boundaries on all major page sections
-- Use shadcn components as the base for all UI — never build from scratch what shadcn provides
-- Never edit files inside `src/components/ui/` directly — customize via Tailwind on wrappers
+- Use shadcn components as the base — never build from scratch what shadcn provides
+- Never edit files inside `src/components/ui/` — customize via Tailwind on wrappers
 
 ---
 
-## Mood Scale
+## Assessment Scoring Reference
 
-| Level | Label | Color |
-|---|---|---|
-| 1 | Awful | `#EF4444` |
-| 2 | Bad | `#F97316` |
-| 3 | Neutral | `#EAB308` |
-| 4 | Good | `#84CC16` |
-| 5 | Great | `#22C55E` |
+**PHQ-9 (Depression — 9 questions, 0–3 each, max 27):**
+| Score | Severity |
+|---|---|
+| 0–4 | Minimal |
+| 5–9 | Mild |
+| 10–14 | Moderate |
+| 15–19 | Moderately Severe |
+| 20–27 | Severe ⚠️ → show crisis resources |
 
-## Assessment Scoring
+**GAD-7 (Anxiety — 7 questions, 0–3 each, max 21):**
+| Score | Severity |
+|---|---|
+| 0–4 | Minimal |
+| 5–9 | Mild |
+| 10–14 | Moderate |
+| 15–21 | Severe ⚠️ → show crisis resources |
 
-**PHQ-9:** 0-4 Minimal · 5-9 Mild · 10-14 Moderate · 15-19 Moderately Severe · 20-27 Severe ⚠️
-**GAD-7:** 0-4 Minimal · 5-9 Mild · 10-14 Moderate · 15-21 Severe ⚠️
+---
+
+## Reference Documents
+
+- `docs/deliverable-1.pdf` — problem statement, objectives, stakeholders, competitive analysis (Daylio vs Moodfit)
+- `docs/deliverable-2.pdf` — functional requirements (FR-01–FR-15), non-functional requirements, assumptions, constraints, use cases UC-01–UC-05, Figma login + dashboard screens
+- `docs/deliverable-3.pdf` — final use case diagram, class diagram (12 classes), sequence diagrams (UC-01, UC-02), activity diagram (full app flow), updated Figma prototype (11 screens)
+
+When implementing any feature, reference the relevant use case from deliverable-2.pdf for exact main flow, alternative flows, and exception flows.
 
 ---
 
@@ -438,6 +465,8 @@ SUPABASE_SERVICE_ROLE_KEY=      # server only
 DATABASE_URL=                   # Supabase direct connection string for Drizzle
 AI_GATEWAY_API_KEY=             # server only — from Vercel dashboard
 NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_VAPID_PUBLIC_KEY=   # for Web Push notifications
+VAPID_PRIVATE_KEY=              # server only
 ```
 
 ---
