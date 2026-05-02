@@ -462,6 +462,34 @@ mp.track('event_name', { key: 'value' })
 - **Never send PII in event properties** — no journal notes, no email in custom props (profile props like `$email` are fine via `mp.people.set`)
 - **Import `mp` from `@/lib/mixpanel`** — never import `mixpanel-browser` directly in components
 - Identity is managed automatically by `MixpanelProvider` — do not call `mp.identify()` or `mp.reset()` in feature code
+## Visual Verification — `/browse`
+
+**Mandatory.** After building or modifying any UI screen or component, use the `/browse` skill to visually verify the result in the browser before reporting the task as complete.
+
+### When to use `/browse`
+- After implementing a new page or screen
+- After changing layout, spacing, colors, or typography
+- After adding or modifying animations/transitions
+- After fixing any visual bug
+- After responsive design changes — check both mobile (375px) and desktop (1024px+) viewports
+- When the Figma design is the reference — browse to compare against the design
+
+### How to use it
+1. Ensure the dev server is running (`npm run dev` on port 3000)
+2. Invoke `/browse` to navigate to the relevant page on `localhost:3000`
+3. Take screenshots and visually inspect the rendered output
+4. If the output doesn't match expectations or the Figma design, iterate on the code and re-check
+5. Test the golden path **and** edge cases (empty states, loading states, error states)
+
+### What to verify
+- Layout matches Figma / design intent (spacing, alignment, hierarchy)
+- Mobile-first rendering looks correct at 375px
+- Touch targets are visually adequate (44×44px minimum)
+- Colors, typography, and visual hierarchy match the design system
+- Animations and transitions render smoothly
+- No visual regressions on surrounding components
+
+**Do not claim a UI task is complete without visually verifying it with `/browse`.**
 
 ---
 
