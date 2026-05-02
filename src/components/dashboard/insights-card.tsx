@@ -27,14 +27,12 @@ export function InsightsCard() {
       <div className="relative z-10 p-5 sm:p-6 flex flex-col justify-between h-full min-h-[240px]">
         <h3
           className="text-[18px] text-[#524439] font-semibold mb-3"
-          style={{ fontFamily: 'var(--font-nunito)' }}
         >
           Insights for You
         </h3>
 
         <p
           className="text-[14px] text-[#755a41] font-normal leading-[20px] max-w-[200px] mb-4"
-          style={{ fontFamily: 'var(--font-nunito)' }}
         >
           Log at least 5 mood entries to get personalized AI suggestions.
         </p>
@@ -42,13 +40,11 @@ export function InsightsCard() {
         <div className="flex flex-wrap gap-2">
           <span
             className="px-4 py-2 bg-[#fdf2dd] border border-white/50 rounded-xl text-[11px] text-[#755a41] font-normal shadow-[0px_2px_15px_#f6d5b0] min-h-[38px] flex items-center"
-            style={{ fontFamily: 'var(--font-nunito)' }}
           >
             Journaling
           </span>
           <span
             className="px-4 py-2 bg-[#fdf2dd] border border-white/50 rounded-xl text-[11px] text-[#755a41] font-normal shadow-[0px_2px_15px_#f6d5b0] min-h-[38px] flex items-center"
-            style={{ fontFamily: 'var(--font-nunito)' }}
           >
             Sleep Tips
           </span>

@@ -21,7 +21,6 @@ export function DashboardContent({
       {/* Greeting */}
       <h2
         className="text-[22px] sm:text-[26px] text-[#524439] font-bold mb-6 lg:mb-8"
-        style={{ fontFamily: 'var(--font-nunito)' }}
       >
         {greeting}, {fullName} <span>{greetingIcon}</span>
       </h2>

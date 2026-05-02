@@ -1,18 +1,12 @@
 import type { Metadata, Viewport } from 'next'
-import { Poppins, Nunito } from 'next/font/google'
+import { Plus_Jakarta_Sans } from 'next/font/google'
+import { MixpanelProvider } from '@/components/providers/mixpanel-provider'
 import './globals.css'
 
-const poppins = Poppins({
+const plusJakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-poppins',
-  display: 'swap',
-})
-
-const nunito = Nunito({
-  subsets: ['latin'],
-  weight: ['300', '400', '600', '700', '800'],
-  variable: '--font-nunito',
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-plus-jakarta',
   display: 'swap',
 })
 
@@ -35,10 +29,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${poppins.variable} ${nunito.variable} h-full antialiased`}
+      className={`${plusJakarta.variable} h-full antialiased`}
     >
       <body className="min-h-[100dvh] bg-background text-foreground font-sans">
-        {children}
+        <MixpanelProvider>{children}</MixpanelProvider>
       </body>
     </html>
   )

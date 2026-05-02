@@ -47,7 +47,6 @@ export function BottomNav() {
               <item.icon className="size-5" />
               <span
                 className="text-[10px] font-semibold"
-                style={{ fontFamily: 'var(--font-nunito)' }}
               >
                 {item.label}
               </span>
