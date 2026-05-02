@@ -16,12 +16,13 @@ Moodify combines both, plus AI-powered suggestions neither competitor offers.
 ## Skills — Always Read Before Working
 
 > Mandatory. Read the relevant skill before starting any work in that area.
+> All skill files live in `.agents/skills/`.
 
-| Skill | When to read it |
-|---|---|
-| `shadcn` | Before adding, fixing, styling, or composing any shadcn component |
-| `ui-ux-pro-max` | Before any design decision — colors, layout, spacing, typography |
-| `frontend-design` | Before building any new screen or component — aesthetic direction, motion, visual quality |
+| Skill | Path | When to read it |
+|---|---|---|
+| `shadcn` | [`.agents/skills/shadcn/SKILL.md`](.agents/skills/shadcn/SKILL.md) | Before adding, fixing, styling, or composing any shadcn component |
+| `ui-ux-pro-max` | [`.agents/skills/ui-ux-pro-max/SKILL.md`](.agents/skills/ui-ux-pro-max/SKILL.md) | Before any design decision — colors, layout, spacing, typography |
+| `frontend-design` | [`.agents/skills/frontend-design/SKILL.md`](.agents/skills/frontend-design/SKILL.md) | Before building any new screen or component — aesthetic direction, motion, visual quality |
 
 All three work together: `ui-ux-pro-max` → UX hierarchy, `frontend-design` → visual aesthetic, `shadcn` → component implementation.
 
