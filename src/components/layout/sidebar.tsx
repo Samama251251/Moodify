@@ -38,7 +38,6 @@ export function Sidebar() {
         />
         <span
           className="text-[24px] text-[#524439] font-bold"
-          style={{ fontFamily: 'var(--font-nunito)' }}
         >
           Moodify
         </span>
@@ -61,7 +60,6 @@ export function Sidebar() {
                   ? 'bg-[#ffe082] text-[#524439]'
                   : 'text-[#8d6e63] hover:bg-[#ffe082]/30'
               }`}
-              style={{ fontFamily: 'var(--font-nunito)' }}
             >
               <item.icon
                 className={`size-5 ${

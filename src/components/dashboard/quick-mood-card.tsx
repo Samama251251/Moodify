@@ -39,7 +39,6 @@ export function QuickMoodCard() {
     <div className="bg-white/70 backdrop-blur-[5px] border border-white/50 rounded-2xl p-5 sm:p-6 shadow-[0px_8px_12.5px_rgba(255,193,7,0.15)]">
       <h3
         className="text-[18px] text-[#524439] font-semibold mb-4"
-        style={{ fontFamily: 'var(--font-nunito)' }}
       >
         How are you feeling today?
       </h3>
@@ -56,7 +55,6 @@ export function QuickMoodCard() {
                 : ''
             }`}
             style={{
-              fontFamily: 'var(--font-nunito)',
               backgroundColor: mood.bg,
               border: `1px solid ${mood.border}`,
               color: mood.textColor,
@@ -75,7 +73,6 @@ export function QuickMoodCard() {
         maxLength={500}
         placeholder="Add a note..."
         className="w-full bg-[rgba(248,222,178,0.4)] border border-[#d7ad72] rounded-xl px-4 py-3 text-base text-[#524439] placeholder:text-[#9ca3af] font-medium resize-none h-[50px] focus:outline-none focus:ring-1 focus:ring-[#d7ad72]"
-        style={{ fontFamily: 'var(--font-nunito)' }}
       />
 
       {/* Save button */}
@@ -83,7 +80,6 @@ export function QuickMoodCard() {
         onClick={handleSave}
         disabled={!selectedMood || saving}
         className="w-full mt-3 h-12 rounded-xl bg-gradient-to-b from-[#ffd36c] to-[#f7b432] text-white text-[16px] font-extrabold tracking-[0.4px] shadow-[0px_4px_5px_rgba(247,180,50,0.3)] hover:shadow-[0px_6px_12px_rgba(247,180,50,0.4)] active:scale-[0.98] transition-all duration-150 disabled:opacity-50 min-h-[44px]"
-        style={{ fontFamily: 'var(--font-nunito)' }}
       >
         {saving ? 'Saving...' : 'Save Mood'}
       </button>

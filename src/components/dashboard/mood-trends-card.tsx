@@ -8,7 +8,6 @@ export function MoodTrendsCard() {
       <div className="flex items-center justify-between mb-3">
         <h3
           className="text-[18px] text-[#524439] font-semibold"
-          style={{ fontFamily: 'var(--font-nunito)' }}
         >
           Your Mood Trends
         </h3>
@@ -16,7 +15,6 @@ export function MoodTrendsCard() {
 
       <p
         className="text-[13px] text-[#66584d] font-normal mb-4"
-        style={{ fontFamily: 'var(--font-nunito)' }}
       >
         Mood This Week
       </p>
@@ -26,13 +24,11 @@ export function MoodTrendsCard() {
         <div className="text-center">
           <p
             className="text-[14px] text-[#8d6e63] mb-1"
-            style={{ fontFamily: 'var(--font-nunito)' }}
           >
             No mood data yet
           </p>
           <p
             className="text-[12px] text-[#b5a799]"
-            style={{ fontFamily: 'var(--font-nunito)' }}
           >
             Log at least 3 entries to see trends
           </p>

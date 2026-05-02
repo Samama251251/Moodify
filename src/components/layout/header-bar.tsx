@@ -41,7 +41,6 @@ export function HeaderBar({ user }: { user: User }) {
                 <button
                   type="submit"
                   className="flex items-center gap-2 w-full px-4 py-2.5 text-[14px] text-[#786b62] hover:bg-[#fff8e1] transition-colors min-h-[44px]"
-                  style={{ fontFamily: 'var(--font-nunito)' }}
                 >
                   <LogOut className="size-4" />
                   Sign Out
