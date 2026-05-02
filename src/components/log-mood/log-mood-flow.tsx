@@ -138,7 +138,7 @@ export function LogMoodFlow() {
                     backgroundColor:
                       i < step  ? '#e5a623' :
                       i === step ? accentColor :
-                      'white',
+                      '#ffffff',
                     boxShadow:
                       i === step
                         ? `0 4px 14px ${accentColor}55`
