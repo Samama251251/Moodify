@@ -1,67 +1,82 @@
 'use client'
 
-import Image from 'next/image'
-import { Skeleton } from '@/components/ui/skeleton'
+import Link from 'next/link'
+import { Sparkles, ArrowRight, BookOpen, Moon } from 'lucide-react'
+
+const tips = [
+  {
+    id: 1,
+    icon: BookOpen,
+    iconBg: 'rgba(254,210,101,0.3)',
+    iconColor: '#7d5700',
+    title: 'Evening Reflection',
+    description: 'Writing down three things you were grateful for today can improve your sleep quality by 15%.',
+    action: 'Start Activity',
+    href: '/suggestions',
+    accentColor: '#7d5700',
+  },
+  {
+    id: 2,
+    icon: Moon,
+    iconBg: 'rgba(146,187,161,0.3)',
+    iconColor: '#406650',
+    title: 'Wind Down Routine',
+    description: 'Your data shows you sleep better when you avoid screens 30 minutes before bed.',
+    action: 'Set Reminder',
+    href: '/settings',
+    accentColor: '#406650',
+  },
+]
 
 export function InsightsCard() {
   return (
-    <div
-      className="border border-[#fbe6c6] rounded-2xl shadow-[0px_8px_30px_rgba(215,165,100,0.12)] overflow-hidden relative min-h-[240px]"
-      style={{
-        background:
-          'linear-gradient(152deg, rgb(254, 242, 218) 0%, rgb(252, 234, 187) 100%)',
-      }}
-    >
-      {/* Illustration on the right (desktop), hidden on smaller screens */}
-      <div className="absolute right-0 bottom-0 opacity-90 hidden sm:block">
-        <Image
-          src="/images/insights-illustration.webp"
-          alt=""
-          width={280}
-          height={186}
-          className="object-contain"
-        />
-      </div>
-
-      {/* Content */}
-      <div className="relative z-10 p-5 sm:p-6 flex flex-col justify-between h-full min-h-[240px]">
-        <h3
-          className="text-[18px] text-[#524439] font-semibold mb-3"
-        >
+    <div className="rounded-[28px] bg-white shadow-[0px_20px_20px_rgba(125,87,0,0.06)] p-6 lg:p-8">
+      {/* Header */}
+      <div className="flex items-center gap-2.5 mb-5 lg:mb-6">
+        <div className="flex items-center justify-center size-7">
+          <Sparkles className="size-5 text-[#e5a623]" strokeWidth={1.5} />
+        </div>
+        <h3 className="text-[20px] lg:text-[26px] font-semibold text-[#1d1c12] tracking-[-0.5px]">
           Insights for You
         </h3>
-
-        <p
-          className="text-[14px] text-[#755a41] font-normal leading-[20px] max-w-[200px] mb-4"
-        >
-          Log at least 5 mood entries to get personalized AI suggestions.
-        </p>
-
-        <div className="flex flex-wrap gap-2">
-          <span
-            className="px-4 py-2 bg-[#fdf2dd] border border-white/50 rounded-xl text-[11px] text-[#755a41] font-normal shadow-[0px_2px_15px_#f6d5b0] min-h-[38px] flex items-center"
-          >
-            Journaling
-          </span>
-          <span
-            className="px-4 py-2 bg-[#fdf2dd] border border-white/50 rounded-xl text-[11px] text-[#755a41] font-normal shadow-[0px_2px_15px_#f6d5b0] min-h-[38px] flex items-center"
-          >
-            Sleep Tips
-          </span>
-        </div>
       </div>
-    </div>
-  )
-}
 
-export function InsightsCardSkeleton() {
-  return (
-    <div className="bg-white/70 backdrop-blur-[5px] border border-white/50 rounded-2xl p-5 sm:p-6 shadow-[0px_8px_12.5px_rgba(255,193,7,0.15)] min-h-[240px]">
-      <Skeleton className="h-7 w-40 mb-3" />
-      <Skeleton className="h-20 w-48 mb-4" />
-      <div className="flex gap-2">
-        <Skeleton className="h-9 w-24 rounded-xl" />
-        <Skeleton className="h-9 w-24 rounded-xl" />
+      {/* Tip cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {tips.map((tip) => (
+          <div
+            key={tip.id}
+            className="flex flex-col gap-3 bg-[#fff9e9] rounded-[20px] p-5 hover:shadow-[0px_8px_20px_rgba(125,87,0,0.06)] transition-shadow duration-200"
+          >
+            {/* Icon */}
+            <div
+              className="flex items-center justify-center size-12 rounded-full shrink-0"
+              style={{ background: tip.iconBg }}
+            >
+              <tip.icon className="size-5" style={{ color: tip.iconColor }} strokeWidth={1.5} />
+            </div>
+
+            {/* Title */}
+            <h4 className="text-[16px] font-bold text-[#1d1c12] leading-[1.3]">
+              {tip.title}
+            </h4>
+
+            {/* Description */}
+            <p className="text-[13px] text-[#504534] leading-[1.6] flex-1">
+              {tip.description}
+            </p>
+
+            {/* Action link */}
+            <Link
+              href={tip.href}
+              className="inline-flex items-center gap-1 text-[13px] font-semibold min-h-[44px] hover:gap-2 transition-all duration-150"
+              style={{ color: tip.accentColor }}
+            >
+              {tip.action}
+              <ArrowRight size={13} />
+            </Link>
+          </div>
+        ))}
       </div>
     </div>
   )

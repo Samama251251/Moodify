@@ -55,6 +55,7 @@ export default function LoginPage() {
                 src="/images/meditation-illustration.png"
                 alt="Meditation illustration"
                 fill
+                sizes="50vw"
                 className="object-cover mix-blend-multiply opacity-80"
                 priority
               />

@@ -17,20 +17,33 @@ export function DashboardContent({
   fullName,
 }: DashboardContentProps) {
   return (
-    <div className="px-4 sm:px-6 lg:px-10 py-6 lg:py-10">
+    <div className="px-4 sm:px-6 lg:px-10 py-6 lg:py-10 max-w-[1400px]">
       {/* Greeting */}
-      <h2
-        className="text-[22px] sm:text-[26px] text-[#524439] font-bold mb-6 lg:mb-8"
-      >
-        {greeting}, {fullName} <span>{greetingIcon}</span>
-      </h2>
+      <div className="mb-8 lg:mb-10">
+        <h2 className="text-[28px] sm:text-[36px] lg:text-[48px] xl:text-[56px] font-bold text-[#1d1c12] tracking-[-1px] lg:tracking-[-1.5px] leading-[1.2]">
+          {greeting}, {fullName}{' '}
+          <span className="inline-block">{greetingIcon}</span>
+        </h2>
+        <p className="text-[14px] sm:text-[16px] lg:text-[18px] text-[#504534] mt-2 lg:mt-3 max-w-[560px]">
+          Take a deep breath. Here is your daily sanctuary to reflect and reset.
+        </p>
+      </div>
 
-      {/* Card grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-6">
+      {/* Bento Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-5">
+        {/* Row 1: Mood entry + Meditation */}
         <QuickMoodCard />
         <BreathingCard />
-        <MoodTrendsCard />
-        <InsightsCard />
+
+        {/* Row 2: Mood chart — full width */}
+        <div className="lg:col-span-2">
+          <MoodTrendsCard />
+        </div>
+
+        {/* Row 3: Insights — full width */}
+        <div className="lg:col-span-2">
+          <InsightsCard />
+        </div>
       </div>
     </div>
   )

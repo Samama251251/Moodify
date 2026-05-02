@@ -1,103 +1,103 @@
 'use client'
 
 import { useState } from 'react'
-import { Skeleton } from '@/components/ui/skeleton'
+import { ArrowRight } from 'lucide-react'
 import { mp } from '@/lib/mixpanel'
 
 const moods = [
-  { level: 5, label: 'Great', emoji: '😄', bg: 'rgba(255,211,108,0.4)', border: 'rgba(247,180,50,0.5)', textColor: '#524439' },
-  { level: 4, label: 'Good', emoji: '🙂', bg: 'rgba(248,222,178,0.6)', border: 'transparent', textColor: '#66584d' },
-  { level: 3, label: 'Neutral', emoji: '😐', bg: 'rgba(248,222,178,0.6)', border: 'transparent', textColor: '#66584d' },
-  { level: 2, label: 'Bad', emoji: '😕', bg: 'rgba(242,169,142,0.4)', border: 'transparent', textColor: '#964d36' },
-  { level: 1, label: 'Awful', emoji: '😞', bg: 'rgba(232,140,140,0.4)', border: 'transparent', textColor: '#8b3a3a' },
+  { level: 1, emoji: '😢', label: 'Awful' },
+  { level: 2, emoji: '😕', label: 'Bad' },
+  { level: 3, emoji: '😐', label: 'Neutral' },
+  { level: 4, emoji: '🙂', label: 'Good' },
+  { level: 5, emoji: '😄', label: 'Great' },
 ]
 
 export function QuickMoodCard() {
-  const [selectedMood, setSelectedMood] = useState<number | null>(null)
+  const [selected, setSelected] = useState<number | null>(null)
   const [note, setNote] = useState('')
   const [saving, setSaving] = useState(false)
+  const [saved, setSaved] = useState(false)
 
   async function handleSave() {
-    if (!selectedMood) return
+    if (!selected) return
     setSaving(true)
-    const moodLabel = moods.find((m) => m.level === selectedMood)?.label
-    // TODO: wire up to server action
+    const moodLabel = moods.find((m) => m.level === selected)?.label
+    // TODO: wire up server action
+    await new Promise((r) => setTimeout(r, 800))
+    mp.track('mood_logged', {
+      mood_level: selected,
+      mood_label: moodLabel,
+      has_note: note.length > 0,
+    })
+    setSaving(false)
+    setSaved(true)
     setTimeout(() => {
-      mp.track('mood_logged', {
-        mood_level: selectedMood,
-        mood_label: moodLabel,
-        has_note: note.length > 0,
-        note_length: note.length,
-      })
-      setSaving(false)
-      setSelectedMood(null)
+      setSaved(false)
+      setSelected(null)
       setNote('')
-    }, 1000)
+    }, 1800)
   }
 
   return (
-    <div className="bg-white/70 backdrop-blur-[5px] border border-white/50 rounded-2xl p-5 sm:p-6 shadow-[0px_8px_12.5px_rgba(255,193,7,0.15)]">
-      <h3
-        className="text-[18px] text-[#524439] font-semibold mb-4"
-      >
-        How are you feeling today?
+    <div className="relative overflow-hidden rounded-[28px] bg-white/80 backdrop-blur-[12px] border border-white/60 shadow-[0px_20px_40px_rgba(125,87,0,0.06)] p-6 lg:p-8 flex flex-col gap-5">
+      {/* Decorative glow */}
+      <div className="absolute -top-16 -right-16 size-48 rounded-full bg-[rgba(255,210,100,0.2)] blur-[40px] pointer-events-none" />
+
+      <h3 className="text-[18px] lg:text-[22px] font-semibold text-[#7d5700] leading-[1.3] relative">
+        How are you feeling right now?
       </h3>
 
-      {/* Mood emoji buttons */}
-      <div className="flex flex-wrap gap-2 sm:gap-3 mb-4">
-        {moods.map((mood) => (
-          <button
-            key={mood.level}
-            onClick={() => setSelectedMood(mood.level)}
-            className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-[14px] font-normal transition-all duration-150 min-h-[44px] ${
-              selectedMood === mood.level
-                ? 'ring-2 ring-[#f7b432] scale-[1.02]'
-                : ''
-            }`}
-            style={{
-              backgroundColor: mood.bg,
-              border: `1px solid ${mood.border}`,
-              color: mood.textColor,
-            }}
-          >
-            <span className="text-[20px]">{mood.emoji}</span>
-            {mood.label}
-          </button>
-        ))}
+      {/* Emoji row */}
+      <div className="flex items-center justify-between px-1 relative">
+        {moods.map((mood) => {
+          const isSelected = selected === mood.level
+          return (
+            <button
+              key={mood.level}
+              onClick={() => setSelected(mood.level)}
+              className={`flex flex-col items-center gap-1.5 transition-all duration-200 active:scale-95 min-w-[44px] min-h-[44px] justify-center rounded-2xl py-2 px-1 ${
+                isSelected
+                  ? 'bg-[#f9f3e3] shadow-[0px_8px_16px_rgba(125,87,0,0.12)] scale-110'
+                  : 'opacity-50 hover:opacity-80 hover:scale-105'
+              }`}
+              aria-label={mood.label}
+            >
+              <span className={`select-none transition-all duration-200 ${isSelected ? 'text-[44px]' : 'text-[32px]'}`}>
+                {mood.emoji}
+              </span>
+            </button>
+          )
+        })}
       </div>
 
-      {/* Note input */}
-      <textarea
-        value={note}
-        onChange={(e) => setNote(e.target.value)}
-        maxLength={500}
-        placeholder="Add a note..."
-        className="w-full bg-[rgba(248,222,178,0.4)] border border-[#d7ad72] rounded-xl px-4 py-3 text-base text-[#524439] placeholder:text-[#9ca3af] font-medium resize-none h-[50px] focus:outline-none focus:ring-1 focus:ring-[#d7ad72]"
-      />
+      {/* Note field */}
+      <div className="relative">
+        <textarea
+          value={note}
+          onChange={(e) => setNote(e.target.value.slice(0, 500))}
+          placeholder="Jot down a quick thought..."
+          rows={2}
+          className="w-full bg-[#f9f3e3] rounded-[20px] px-5 py-4 text-base text-[#504534] placeholder:text-[rgba(80,69,52,0.4)] focus:outline-none focus:ring-2 focus:ring-[#e5a623]/30 resize-none leading-[1.5]"
+        />
+        {note.length > 0 && (
+          <span className="absolute bottom-3 right-4 text-[11px] text-[rgba(80,69,52,0.4)]">
+            {note.length}/500
+          </span>
+        )}
+      </div>
 
-      {/* Save button */}
+      {/* Save button — full width on mobile, auto on desktop */}
       <button
         onClick={handleSave}
-        disabled={!selectedMood || saving}
-        className="w-full mt-3 h-12 rounded-xl bg-gradient-to-b from-[#ffd36c] to-[#f7b432] text-white text-[16px] font-extrabold tracking-[0.4px] shadow-[0px_4px_5px_rgba(247,180,50,0.3)] hover:shadow-[0px_6px_12px_rgba(247,180,50,0.4)] active:scale-[0.98] transition-all duration-150 disabled:opacity-50 min-h-[44px]"
+        disabled={!selected || saving}
+        className={`w-full sm:w-auto sm:self-end flex items-center justify-center gap-2 px-8 py-3 rounded-full font-semibold text-[15px] transition-all duration-200 min-h-[52px] sm:min-h-[44px] ${
+          saved
+            ? 'bg-[#4CAF82] text-white shadow-[0px_8px_16px_rgba(76,175,130,0.25)]'
+            : 'bg-gradient-to-r from-[#7d5700] to-[#e5a623] text-white shadow-[0px_8px_20px_rgba(125,87,0,0.2)] hover:shadow-[0px_12px_24px_rgba(125,87,0,0.25)] active:scale-[0.98] disabled:opacity-40'
+        }`}
       >
-        {saving ? 'Saving...' : 'Save Mood'}
+        {saved ? 'Saved ✓' : saving ? 'Saving…' : <><span>Save Entry</span><ArrowRight size={14} /></>}
       </button>
-    </div>
-  )
-}
-
-export function QuickMoodCardSkeleton() {
-  return (
-    <div className="bg-white/70 backdrop-blur-[5px] border border-white/50 rounded-2xl p-5 sm:p-6 shadow-[0px_8px_12.5px_rgba(255,193,7,0.15)]">
-      <Skeleton className="h-7 w-56 mb-4" />
-      <div className="flex gap-3 mb-4">
-        {[1, 2, 3, 4].map((i) => (
-          <Skeleton key={i} className="h-10 w-24 rounded-xl" />
-        ))}
-      </div>
-      <Skeleton className="h-12 w-full rounded-xl mb-3" />
-      <Skeleton className="h-12 w-full rounded-xl" />
     </div>
   )
 }

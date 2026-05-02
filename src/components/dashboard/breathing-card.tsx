@@ -2,39 +2,41 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { Play } from 'lucide-react'
 
 export function BreathingCard() {
   return (
-    <div className="bg-white/70 backdrop-blur-[5px] border border-white/50 rounded-2xl p-5 sm:p-6 shadow-[0px_8px_12.5px_rgba(255,193,7,0.15)]">
-      <h3
-        className="text-[18px] text-[#524439] font-semibold mb-4"
-      >
-        Exercise
-      </h3>
-
-      <div className="relative bg-[#d5e6f4] rounded-2xl overflow-hidden h-[170px] sm:h-[190px]">
+    <div className="relative overflow-hidden rounded-[28px] bg-[rgba(146,187,161,0.3)] shadow-[0px_20px_40px_rgba(125,87,0,0.06)] min-h-[280px] lg:min-h-0 flex flex-col justify-end">
+      {/* Background image */}
+      <div className="absolute inset-0">
         <Image
-          src="/images/exercise-bg.webp"
-          alt="Breathing exercise"
+          src="/images/meditation-illustration.png"
+          alt="Meditation"
           fill
-          className="object-cover rounded-2xl"
+          sizes="(max-width: 1024px) 100vw, 50vw"
+          className="object-cover opacity-80 mix-blend-multiply"
+          priority
         />
+      </div>
 
-        <div className="absolute right-4 top-1/2 -translate-y-1/2 text-center">
-          <p
-            className="text-[18px] sm:text-[20px] text-[#524439] font-normal leading-[28px] mb-3"
-          >
-            Harmony
-            <br />
-            within you
-          </p>
-          <Link
-            href="/suggestions"
-            className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-white/70 border border-[#d9d9d9] rounded-full text-[13px] text-[#524439] font-semibold hover:bg-white/90 transition-colors min-h-[44px]"
-          >
-            Start
-          </Link>
-        </div>
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[rgba(0,33,18,0.88)] via-[rgba(0,33,18,0.35)] to-transparent" />
+
+      {/* Content */}
+      <div className="relative z-10 p-6 lg:p-8">
+        <p className="text-[11px] font-bold text-[#c2edd0] tracking-[1.2px] uppercase mb-2">
+          Exercise
+        </p>
+        <h3 className="text-[26px] lg:text-[30px] font-bold text-white leading-[1.2] mb-5">
+          Harmony within you
+        </h3>
+        <Link
+          href="/suggestions"
+          className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full backdrop-blur-[6px] bg-white/10 border border-white/20 text-white text-[15px] font-semibold hover:bg-white/20 active:scale-[0.97] transition-all duration-150 min-h-[44px]"
+        >
+          <Play size={10} className="fill-white" />
+          Start 10 min session
+        </Link>
       </div>
     </div>
   )
