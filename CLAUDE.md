@@ -553,5 +553,5 @@ npm run db:studio    # open drizzle studio
 
 ## Team
 
-Ahmed Raza · Bilal Rana · Meerab Chaudry · M. Samama Usman
+Ahmed Raza · Bilal Rana · Meerab Chaudry · M Samama Usman
 SE 200 — BSCS-13E · NUST SEECS · Instructor: Sir Sarosh Tahir
