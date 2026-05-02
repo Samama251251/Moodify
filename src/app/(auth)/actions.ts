@@ -15,7 +15,7 @@ export async function login(formData: FormData) {
     return { error: error.message }
   }
 
-  redirect('/')
+  return { success: true }
 }
 
 export async function register(formData: FormData) {
@@ -37,7 +37,7 @@ export async function register(formData: FormData) {
     return { error: error.message }
   }
 
-  redirect('/')
+  return { success: true }
 }
 
 export async function loginWithGoogle() {

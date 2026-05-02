@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react'
@@ -8,6 +9,7 @@ import { login, loginWithGoogle } from '../actions'
 import { mp } from '@/lib/mixpanel'
 
 export default function LoginPage() {
+  const router = useRouter()
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
@@ -22,6 +24,8 @@ export default function LoginPage() {
       setLoading(false)
     } else {
       mp.track('login_completed', { method: 'email' })
+      router.push('/')
+      router.refresh()
     }
   }
 
