@@ -1,37 +1,110 @@
 'use client'
 
-import { Skeleton } from '@/components/ui/skeleton'
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  CartesianGrid,
+} from 'recharts'
 
-export function MoodTrendsCard() {
+const ghostData = [
+  { day: 'Mon', mood: 3.2 },
+  { day: 'Tue', mood: 2.5 },
+  { day: 'Wed', mood: 3.8 },
+  { day: 'Thu', mood: 2.8 },
+  { day: 'Fri', mood: 4.2 },
+  { day: 'Sat', mood: 3.5 },
+  { day: 'Today', mood: 4.5 },
+]
+
+interface MoodTrendsCardProps {
+  data?: { day: string; mood: number }[]
+}
+
+export function MoodTrendsCard({ data }: MoodTrendsCardProps) {
+  const hasData = data && data.length >= 3
+  const chartData = hasData ? data : ghostData
+
   return (
-    <div className="bg-white/70 backdrop-blur-[5px] border border-white/50 rounded-2xl p-5 sm:p-6 shadow-[0px_8px_12.5px_rgba(255,193,7,0.15)]">
-      <div className="flex items-center justify-between mb-3">
-        <h3
-          className="text-[18px] text-[#524439] font-semibold"
-        >
-          Your Mood Trends
-        </h3>
+    <div className="rounded-[28px] bg-[#f9f3e3] shadow-[0px_20px_20px_rgba(125,87,0,0.06)] p-6 lg:p-8">
+      {/* Header */}
+      <div className="flex items-start justify-between mb-1">
+        <div>
+          <h3 className="text-[20px] lg:text-[26px] font-semibold text-[#1d1c12] tracking-[-0.5px]">
+            Your Week in View
+          </h3>
+          <p className="text-[13px] lg:text-[15px] text-[#504534] mt-1">
+            A gentle look at your emotional rhythms.
+          </p>
+        </div>
       </div>
 
-      <p
-        className="text-[13px] text-[#66584d] font-normal mb-4"
-      >
-        Mood This Week
-      </p>
+      {/* Chart container */}
+      <div className="relative mt-6">
+        {/* Ghost overlay when no data */}
+        {!hasData && (
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-1 pointer-events-none">
+            <p className="text-[14px] font-semibold text-[#504534]">
+              Log at least 3 mood entries
+            </p>
+            <p className="text-[12px] text-[#827562]">
+              to see your weekly trend
+            </p>
+          </div>
+        )}
 
-      {/* Empty state — chart skeleton */}
-      <div className="h-[168px] flex items-center justify-center">
-        <div className="text-center">
-          <p
-            className="text-[14px] text-[#8d6e63] mb-1"
-          >
-            No mood data yet
-          </p>
-          <p
-            className="text-[12px] text-[#b5a799]"
-          >
-            Log at least 3 entries to see trends
-          </p>
+        <div className={!hasData ? 'opacity-20 select-none pointer-events-none' : ''}>
+          <ResponsiveContainer width="100%" height={200}>
+            <AreaChart data={chartData} margin={{ top: 12, right: 8, left: -24, bottom: 0 }}>
+              <defs>
+                <linearGradient id="moodAreaGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#e5a623" stopOpacity={0.35} />
+                  <stop offset="100%" stopColor="#e5a623" stopOpacity={0.03} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid
+                horizontal
+                vertical={false}
+                stroke="rgba(213,196,174,0.25)"
+                strokeDasharray="0"
+              />
+              <XAxis
+                dataKey="day"
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 12, fill: '#504534', fontWeight: 500, fontFamily: 'var(--font-plus-jakarta)' }}
+                dy={8}
+              />
+              <YAxis domain={[1, 5]} hide />
+              <Tooltip
+                contentStyle={{
+                  background: 'rgba(255,255,255,0.9)',
+                  border: '1px solid rgba(213,196,174,0.4)',
+                  borderRadius: '12px',
+                  boxShadow: '0 8px 24px rgba(125,87,0,0.10)',
+                  padding: '8px 14px',
+                  fontSize: '13px',
+                  color: '#504534',
+                  fontWeight: 600,
+                }}
+                itemStyle={{ color: '#7d5700' }}
+                labelStyle={{ color: '#504534', fontWeight: 700, marginBottom: 2 }}
+                cursor={{ stroke: 'rgba(229,166,35,0.3)', strokeWidth: 1, strokeDasharray: '4 4' }}
+              />
+              <Area
+                type="monotone"
+                dataKey="mood"
+                stroke="#e5a623"
+                strokeWidth={2.5}
+                fill="url(#moodAreaGradient)"
+                dot={{ fill: '#ffffff', stroke: '#e5a623', strokeWidth: 2, r: 4 }}
+                activeDot={{ r: 6, fill: '#e5a623', stroke: 'white', strokeWidth: 2 }}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
         </div>
       </div>
     </div>
@@ -40,10 +113,10 @@ export function MoodTrendsCard() {
 
 export function MoodTrendsCardSkeleton() {
   return (
-    <div className="bg-white/70 backdrop-blur-[5px] border border-white/50 rounded-2xl p-5 sm:p-6 shadow-[0px_8px_12.5px_rgba(255,193,7,0.15)]">
-      <Skeleton className="h-7 w-44 mb-3" />
-      <Skeleton className="h-5 w-28 mb-4" />
-      <Skeleton className="h-[168px] w-full rounded-lg" />
+    <div className="rounded-[28px] bg-[#f9f3e3] p-6 lg:p-8 h-[320px] animate-pulse">
+      <div className="h-6 w-44 bg-[rgba(213,196,174,0.4)] rounded-full mb-2" />
+      <div className="h-4 w-64 bg-[rgba(213,196,174,0.3)] rounded-full mb-8" />
+      <div className="h-[180px] bg-[rgba(213,196,174,0.2)] rounded-2xl" />
     </div>
   )
 }

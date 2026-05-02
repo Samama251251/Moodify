@@ -24,20 +24,17 @@ export default async function AppLayout({
     'there'
 
   return (
-    <div className="min-h-[100dvh] bg-[#fdf6e3] lg:flex">
-      {/* Desktop sidebar */}
-      <Sidebar />
+    <div className="min-h-[100dvh] bg-[#fff9e9] lg:flex">
+      <Sidebar user={user} />
 
-      {/* Main content area */}
       <div className="flex flex-1 flex-col min-h-[100dvh] lg:min-h-0">
-        <HeaderBar user={user} />
+        <HeaderBar user={user} fullName={fullName} />
 
         <main className="flex-1 overflow-y-auto pb-24 lg:pb-8">
           {children}
         </main>
       </div>
 
-      {/* Mobile bottom nav */}
       <BottomNav />
     </div>
   )
