@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 export async function login(formData: FormData) {
@@ -43,9 +44,9 @@ export async function register(formData: FormData) {
 export async function loginWithGoogle() {
   const supabase = await createClient()
 
-  const baseUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000')
+  const headersList = await headers()
+  const origin = headersList.get('origin')
+  const baseUrl = origin || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
