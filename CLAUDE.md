@@ -426,6 +426,45 @@ Free, accessible from home screen, no login required (FR-09 hard constraint).
 
 ---
 
+## Mixpanel Analytics — Always Add Tracking
+
+> **Mandatory.** Every new user-facing feature, screen, or interaction **must** include Mixpanel event tracking before it is considered complete.
+
+### Setup
+- SDK: `mixpanel-browser` — initialized once via `MixpanelProvider` in root layout
+- Token: `NEXT_PUBLIC_MIXPANEL_TOKEN` in `.env`
+- Core lib: `src/lib/mixpanel.ts` — exposes `mp.track()`, `mp.identify()`, `mp.people.set()`, `mp.register()`, `mp.reset()`
+- Provider: `src/components/providers/mixpanel-provider.tsx` — handles init + auto-identity via Supabase auth state
+
+### How to track
+```typescript
+import { mp } from '@/lib/mixpanel'
+
+// In any client component, after the user action succeeds:
+mp.track('event_name', { key: 'value' })
+```
+
+### What to track (add events for every new feature)
+| Category | Events to add |
+|---|---|
+| Auth | `login_completed`, `login_failed`, `sign_up_completed`, `sign_up_failed`, `session_started` (auto) |
+| Mood logging | `mood_logged` (level, label, has_note, emotion_tags, activity_tags) |
+| Assessments | `assessment_started`, `assessment_completed` (type, score, severity) |
+| AI Suggestions | `suggestion_viewed`, `suggestion_engaged`, `suggestion_feedback` (type, helpful) |
+| Breathing | `breathing_started`, `breathing_completed` (exercise_type, duration) |
+| Gratitude | `gratitude_logged` (item_count) |
+| Export | `report_exported` (format: pdf/csv) |
+| Navigation | Page views tracked automatically by SDK |
+
+### Rules
+- **Track after success, not on click** — only fire events after the action completes in the DB/API
+- **Use snake_case** for all event names and property keys
+- **Never send PII in event properties** — no journal notes, no email in custom props (profile props like `$email` are fine via `mp.people.set`)
+- **Import `mp` from `@/lib/mixpanel`** — never import `mixpanel-browser` directly in components
+- Identity is managed automatically by `MixpanelProvider` — do not call `mp.identify()` or `mp.reset()` in feature code
+
+---
+
 ## Assessment Scoring Reference
 
 **PHQ-9 (Depression — 9 questions, 0–3 each, max 27):**

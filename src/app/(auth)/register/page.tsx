@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Eye, EyeOff } from 'lucide-react'
 import { register, loginWithGoogle } from '../actions'
+import { mp } from '@/lib/mixpanel'
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false)
@@ -20,15 +21,20 @@ export default function RegisterPage() {
     const result = await register(formData)
     if (result?.error) {
       setError(result.error)
+      mp.track('sign_up_failed', { method: 'email', error: result.error })
       setLoading(false)
+    } else {
+      mp.track('sign_up_completed', { method: 'email' })
     }
   }
 
   async function handleGoogleLogin() {
     setLoading(true)
+    mp.track('sign_up_started', { method: 'google' })
     const result = await loginWithGoogle()
     if (result?.error) {
       setError(result.error)
+      mp.track('sign_up_failed', { method: 'google', error: result.error })
       setLoading(false)
     }
   }

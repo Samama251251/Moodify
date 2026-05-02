@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'
+import { mp } from '@/lib/mixpanel'
 
 const moods = [
   { level: 5, label: 'Great', emoji: '😄', bg: 'rgba(255,211,108,0.4)', border: 'rgba(247,180,50,0.5)', textColor: '#524439' },
@@ -19,8 +20,15 @@ export function QuickMoodCard() {
   async function handleSave() {
     if (!selectedMood) return
     setSaving(true)
+    const moodLabel = moods.find((m) => m.level === selectedMood)?.label
     // TODO: wire up to server action
     setTimeout(() => {
+      mp.track('mood_logged', {
+        mood_level: selectedMood,
+        mood_label: moodLabel,
+        has_note: note.length > 0,
+        note_length: note.length,
+      })
       setSaving(false)
       setSelectedMood(null)
       setNote('')
