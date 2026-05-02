@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react'
+import { Mail, Lock, Eye, EyeOff, ArrowRight, Loader2 } from 'lucide-react'
 import { login, loginWithGoogle } from '../actions'
 import { mp } from '@/lib/mixpanel'
 
@@ -193,7 +193,11 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full h-[56px] rounded-full bg-gradient-to-r from-[#7d5700] to-[#e5a623] text-white text-[17px] font-semibold shadow-[0px_10px_20px_rgba(125,87,0,0.15)] hover:shadow-[0px_14px_28px_rgba(125,87,0,0.2)] active:scale-[0.98] transition-all duration-150 disabled:opacity-60 flex items-center justify-center gap-2"
             >
-              {loading ? 'Signing in…' : <><span>Sign In</span><ArrowRight size={16} /></>}
+              {loading ? (
+                <><Loader2 size={18} className="animate-spin" /><span>Signing in…</span></>
+              ) : (
+                <><span>Sign In</span><ArrowRight size={16} /></>
+              )}
             </button>
           </form>
 
@@ -211,7 +215,11 @@ export default function LoginPage() {
             disabled={loading}
             className="w-full h-[56px] bg-[#f9f3e3] border border-[rgba(213,196,174,0.3)] rounded-full flex items-center justify-center gap-3 hover:bg-[#f4eddc] active:scale-[0.98] transition-all duration-150 disabled:opacity-60"
           >
-            <GoogleIcon />
+            {loading ? (
+              <Loader2 size={18} className="animate-spin text-[#7d5700]" />
+            ) : (
+              <GoogleIcon />
+            )}
             <span className="text-[15px] font-medium text-[#1d1c12]">Continue with Google</span>
           </button>
 

@@ -15,6 +15,7 @@ import {
 } from 'lucide-react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { logout } from '@/app/(auth)/actions'
+import { mp } from '@/lib/mixpanel'
 import type { User } from '@supabase/supabase-js'
 
 const navItems = [
@@ -97,16 +98,18 @@ export function Sidebar({ user }: { user: User }) {
           <span className="text-[14px] font-medium text-[#504534] truncate flex-1">
             {fullName}
           </span>
-          <form action={logout}>
-            <button
-              type="submit"
-              className="flex items-center justify-center size-8 rounded-full hover:bg-[#f9f3e3] transition-colors min-h-[44px] min-w-[44px]"
-              aria-label="Sign out"
-              title="Sign out"
-            >
-              <LogOut className="size-4 text-[#827562]" />
-            </button>
-          </form>
+          <button
+            type="button"
+            onClick={async () => {
+              mp.track('sign_out')
+              await logout()
+            }}
+            className="flex items-center justify-center size-8 rounded-full hover:bg-[#f9f3e3] transition-colors min-h-[44px] min-w-[44px]"
+            aria-label="Sign out"
+            title="Sign out"
+          >
+            <LogOut className="size-4 text-[#827562]" />
+          </button>
         </div>
       </div>
     </aside>
