@@ -41,170 +41,203 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-[100dvh] flex items-center justify-center px-4 py-12 lg:py-28">
-      {/* Outer card container */}
-      <div className="w-full max-w-[1152px] bg-[#f9f3e3] rounded-3xl shadow-[0px_20px_60px_rgba(125,87,0,0.08)] overflow-hidden flex flex-col lg:flex-row min-h-[600px] lg:h-[800px]">
-        {/* Left Panel: Illustration */}
-        <div className="relative flex-1 bg-[#fff9e9] p-8 lg:p-16 flex flex-col items-center justify-center overflow-hidden">
-          {/* Illustration circle */}
-          <div className="relative w-full max-w-[420px] aspect-square rounded-full bg-[rgba(232,226,211,0.3)] backdrop-blur-[6px] shadow-[0px_20px_40px_rgba(125,87,0,0.06)] overflow-hidden">
-            <Image
-              src="/images/meditation-illustration.png"
-              alt="Meditation illustration"
-              fill
-              className="object-cover mix-blend-multiply opacity-80"
-              priority
-            />
-            <div className="absolute inset-0 bg-gradient-to-tr from-[rgba(249,243,227,0.8)] to-transparent mix-blend-screen" />
+    <div className="min-h-[100dvh] flex flex-col lg:flex-row">
+      {/* Left Panel — desktop only */}
+      <div className="relative hidden lg:flex lg:w-1/2 flex-col justify-between bg-[#f9f3e3] p-24 overflow-hidden">
+        <div className="absolute inset-[-37.5%_-12.5%_-12.5%_-37.5%] bg-[radial-gradient(ellipse_at_center,rgba(255,222,170,0.2)_0%,transparent_50%)]" />
+
+        <div className="relative z-10 pb-4">
+          <h1 className="text-[30px] font-bold text-[#7d5700] tracking-[-1.5px] leading-[36px]">
+            Moodify
+          </h1>
+        </div>
+
+        <div className="relative z-10 flex-1 flex flex-col items-start max-w-[512px]">
+          <div className="w-full max-w-[448px] pb-12">
+            <div className="relative aspect-square w-full rounded-full bg-[rgba(232,226,211,0.3)] backdrop-blur-[6px] shadow-[0px_20px_40px_rgba(125,87,0,0.06)] overflow-hidden">
+              <Image
+                src="/images/meditation-illustration.png"
+                alt="Meditation illustration"
+                fill
+                className="object-cover mix-blend-multiply opacity-80"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-tr from-[rgba(249,243,227,0.8)] to-transparent mix-blend-screen" />
+            </div>
           </div>
 
-          {/* Tagline below illustration */}
-          <div className="mt-8 text-center lg:text-left lg:self-start">
+          <div className="mb-4">
             <p className="text-[16px] font-semibold leading-[17.6px] tracking-[-0.32px]">
               <span className="text-[#e5a623]">Track your mood.</span>
               <br />
               <span className="text-[#7d5700]">Understand yourself.</span>
             </p>
           </div>
+
+          <p className="text-[16px] text-[#504534] leading-[26px] max-w-[448px]">
+            A digital sanctuary to reflect, log, and discover patterns in your daily emotional landscape.
+          </p>
         </div>
 
-        {/* Right Panel: Form */}
-        <div className="flex-1 flex items-center justify-center p-6 lg:p-16">
-          <div className="w-full max-w-[448px] bg-[rgba(255,255,255,0.7)] backdrop-blur-[10px] border border-[rgba(213,196,174,0.15)] rounded-[32px] shadow-[0px_20px_20px_rgba(125,87,0,0.06)] p-8 lg:p-12 flex flex-col gap-6">
-            {/* Header */}
-            <div className="flex flex-col gap-2 items-center">
-              <h1 className="text-[36px] font-semibold text-[#1d1c12] tracking-[-0.9px] leading-[40px] text-center">
-                Create Account
-              </h1>
-              <p className="text-[16px] text-[#504534] leading-[24px] text-center">
-                Join us to start tracking your mood.
-              </p>
-            </div>
+        <div className="relative z-10">
+          <p className="text-[14px] font-medium text-[rgba(80,69,52,0.6)] leading-[20px]">
+            © 2025 Moodify. All rights reserved.
+          </p>
+        </div>
+      </div>
 
-            {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3">
-                {error}
-              </div>
-            )}
+      {/* Right Panel — Form */}
+      <div className="
+        flex flex-1 flex-col justify-center
+        min-h-[100dvh] lg:min-h-0 lg:items-center
+        bg-[#fff9e9]
+        px-5 sm:px-6
+        pt-[max(env(safe-area-inset-top),32px)] sm:pt-12 lg:pt-0
+        pb-[max(env(safe-area-inset-bottom),32px)] sm:pb-12 lg:pb-0
+      ">
+        {/* Mobile brand */}
+        <div className="lg:hidden mb-8">
+          <h1 className="text-[28px] font-bold text-[#7d5700] tracking-[-1px] leading-[32px]">
+            Moodify
+          </h1>
+          <p className="text-[13px] text-[#827562] mt-1">Your Digital Sanctuary</p>
+        </div>
 
-            {/* Form */}
-            <form action={handleSubmit} className="flex flex-col gap-6 pt-4">
-              {/* Full Name */}
-              <div className="flex flex-col gap-2">
-                <label htmlFor="fullName" className="text-[12px] text-[#504534] tracking-[1.2px] uppercase leading-[16px]">
-                  FULL NAME
-                </label>
-                <div className="relative">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#827562]">
-                    <User size={16} />
-                  </div>
-                  <input
-                    id="fullName"
-                    name="fullName"
-                    type="text"
-                    required
-                    autoComplete="name"
-                    placeholder="Samama"
-                    className="w-full h-[52px] bg-[#f9f3e3] rounded-full pl-12 pr-4 text-base text-[#504534] placeholder:text-[#827562] focus:outline-none focus:ring-2 focus:ring-[#e5a623]/30"
-                  />
-                </div>
-              </div>
+        {/* Form card — borderless on mobile, card on sm+ */}
+        <div className="w-full max-w-[448px] sm:bg-white sm:rounded-[32px] sm:shadow-[0px_20px_20px_rgba(125,87,0,0.06)] sm:p-8 lg:p-10">
 
-              {/* Email */}
-              <div className="flex flex-col gap-2">
-                <label htmlFor="email" className="text-[12px] text-[#504534] tracking-[1.2px] uppercase leading-[16px]">
-                  EMAIL ADDRESS
-                </label>
-                <div className="relative">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#827562]">
-                    <Mail size={18} />
-                  </div>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    required
-                    inputMode="email"
-                    autoComplete="email"
-                    placeholder="samama@example.com"
-                    className="w-full h-[52px] bg-[#f9f3e3] rounded-full pl-12 pr-4 text-base text-[#504534] placeholder:text-[#827562] focus:outline-none focus:ring-2 focus:ring-[#e5a623]/30"
-                  />
-                </div>
-              </div>
-
-              {/* Password */}
-              <div className="flex flex-col gap-2">
-                <label htmlFor="password" className="text-[12px] text-[#504534] tracking-[1.2px] uppercase leading-[16px]">
-                  PASSWORD
-                </label>
-                <div className="relative">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#827562]">
-                    <Lock size={16} />
-                  </div>
-                  <input
-                    id="password"
-                    name="password"
-                    type={showPassword ? 'text' : 'password'}
-                    required
-                    minLength={6}
-                    autoComplete="new-password"
-                    placeholder="••••••••"
-                    className="w-full h-[52px] bg-[#f9f3e3] rounded-full pl-12 pr-14 text-base text-[#504534] placeholder:text-[#827562] focus:outline-none focus:ring-2 focus:ring-[#e5a623]/30"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#827562] hover:text-[#504534] min-h-[44px] min-w-[44px] flex items-center justify-center"
-                    aria-label={showPassword ? 'Hide password' : 'Show password'}
-                  >
-                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                  </button>
-                </div>
-              </div>
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full h-[56px] rounded-full bg-gradient-to-r from-[#7d5700] to-[#e5a623] text-white text-[18px] font-semibold leading-[28px] shadow-[0px_10px_20px_rgba(229,166,35,0.2)] hover:shadow-[0px_14px_28px_rgba(229,166,35,0.3)] active:scale-[0.98] transition-all duration-150 disabled:opacity-60 flex items-center justify-center min-h-[44px]"
-              >
-                {loading ? 'Creating Account...' : 'Create Account'}
-              </button>
-            </form>
-
-            {/* Divider */}
-            <div className="flex items-center justify-center gap-4 pt-2">
-              <div className="flex-1 h-px bg-[rgba(213,196,174,0.3)]" />
-              <span className="text-[12px] text-[#827562] tracking-[1.2px] uppercase leading-[16px]">
-                OR
-              </span>
-              <div className="flex-1 h-px bg-[rgba(213,196,174,0.3)]" />
-            </div>
-
-            {/* Google Button */}
-            <button
-              type="button"
-              onClick={handleGoogleLogin}
-              disabled={loading}
-              className="w-full h-[56px] bg-[#e8e2d3] rounded-full flex items-center justify-center gap-3 hover:bg-[#dfd8c7] active:scale-[0.98] transition-all duration-150 disabled:opacity-60 min-h-[44px]"
-            >
-              <GoogleIcon />
-              <span className="text-[16px] font-medium text-[#1d1c12] leading-[24px]">
-                Continue with Google
-              </span>
-            </button>
-
-            {/* Login Link */}
-            <p className="text-center text-[16px] text-[#504534] leading-[24px] pt-2">
-              Already have an account?{' '}
-              <Link
-                href="/login"
-                className="font-semibold text-[#7d5700] hover:underline transition-colors"
-              >
-                Log In
-              </Link>
+          <div className="mb-6">
+            <h2 className="text-[22px] sm:text-[18px] font-semibold text-[#7d5700] leading-[28px]">
+              Create Account
+            </h2>
+            <p className="text-[14px] text-[#504534] leading-[22px] mt-1">
+              Join us to start tracking your mood.
             </p>
           </div>
+
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3 mb-5">
+              {error}
+            </div>
+          )}
+
+          <form action={handleSubmit} className="flex flex-col gap-4">
+            {/* Full Name */}
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="fullName" className="text-[12px] text-[#504534] tracking-[0.6px] uppercase leading-[16px]">
+                Full Name
+              </label>
+              <div className="relative">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#827562] pointer-events-none">
+                  <User size={16} />
+                </div>
+                <input
+                  id="fullName"
+                  name="fullName"
+                  type="text"
+                  required
+                  autoComplete="name"
+                  autoCapitalize="words"
+                  autoCorrect="off"
+                  placeholder="Your name"
+                  className="w-full h-[52px] bg-[#f9f3e3] rounded-full pl-12 pr-4 text-base text-[#504534] placeholder:text-[rgba(80,69,52,0.4)] focus:outline-none focus:ring-2 focus:ring-[#e5a623]/30"
+                />
+              </div>
+            </div>
+
+            {/* Email */}
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="email" className="text-[12px] text-[#504534] tracking-[0.6px] uppercase leading-[16px]">
+                Email Address
+              </label>
+              <div className="relative">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#827562] pointer-events-none">
+                  <Mail size={18} />
+                </div>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  inputMode="email"
+                  autoComplete="email"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  spellCheck={false}
+                  placeholder="you@example.com"
+                  className="w-full h-[52px] bg-[#f9f3e3] rounded-full pl-12 pr-4 text-base text-[#504534] placeholder:text-[rgba(80,69,52,0.4)] focus:outline-none focus:ring-2 focus:ring-[#e5a623]/30"
+                />
+              </div>
+            </div>
+
+            {/* Password */}
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="password" className="text-[12px] text-[#504534] tracking-[0.6px] uppercase leading-[16px]">
+                Password
+              </label>
+              <div className="relative">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#827562] pointer-events-none">
+                  <Lock size={16} />
+                </div>
+                <input
+                  id="password"
+                  name="password"
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  minLength={6}
+                  autoComplete="new-password"
+                  placeholder="Min. 6 characters"
+                  className="w-full h-[52px] bg-[#f9f3e3] rounded-full pl-12 pr-14 text-base text-[#504534] placeholder:text-[rgba(80,69,52,0.4)] focus:outline-none focus:ring-2 focus:ring-[#e5a623]/30"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#827562] hover:text-[#504534] min-h-[44px] min-w-[44px] flex items-center justify-center"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+
+            {/* Submit */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full h-[56px] mt-1 rounded-full bg-gradient-to-r from-[#7d5700] to-[#e5a623] text-white text-[17px] font-semibold shadow-[0px_10px_20px_rgba(125,87,0,0.15)] hover:shadow-[0px_14px_28px_rgba(125,87,0,0.2)] active:scale-[0.98] transition-all duration-150 disabled:opacity-60 flex items-center justify-center"
+            >
+              {loading ? 'Creating Account…' : 'Create Account'}
+            </button>
+          </form>
+
+          {/* Divider */}
+          <div className="flex items-center gap-3 my-5">
+            <div className="flex-1 h-px bg-[rgba(213,196,174,0.35)]" />
+            <span className="text-[11px] text-[rgba(80,69,52,0.5)] tracking-[0.8px] uppercase">or</span>
+            <div className="flex-1 h-px bg-[rgba(213,196,174,0.35)]" />
+          </div>
+
+          {/* Google */}
+          <button
+            type="button"
+            onClick={handleGoogleLogin}
+            disabled={loading}
+            className="w-full h-[56px] bg-[#f9f3e3] border border-[rgba(213,196,174,0.3)] rounded-full flex items-center justify-center gap-3 hover:bg-[#f4eddc] active:scale-[0.98] transition-all duration-150 disabled:opacity-60"
+          >
+            <GoogleIcon />
+            <span className="text-[15px] font-medium text-[#1d1c12]">Continue with Google</span>
+          </button>
+
+          {/* Login link */}
+          <p className="text-center mt-6 text-[14px] text-[#504534]">
+            Already have an account?{' '}
+            <Link
+              href="/login"
+              className="font-semibold text-[#7d5700] hover:underline transition-colors"
+            >
+              Log In
+            </Link>
+          </p>
         </div>
       </div>
     </div>

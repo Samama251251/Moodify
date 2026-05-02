@@ -42,19 +42,16 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-[100dvh] flex flex-col lg:flex-row">
-      {/* Left Panel: Illustration & Brand */}
+      {/* Left Panel — desktop only */}
       <div className="relative hidden lg:flex lg:w-1/2 flex-col justify-between bg-[#f9f3e3] p-24 overflow-hidden">
-        {/* Warm radial glow */}
         <div className="absolute inset-[-37.5%_-12.5%_-12.5%_-37.5%] bg-[radial-gradient(ellipse_at_center,rgba(255,222,170,0.2)_0%,transparent_50%)]" />
 
-        {/* Brand */}
         <div className="relative z-10 pb-4">
           <h1 className="text-[30px] font-bold text-[#7d5700] tracking-[-1.5px] leading-[36px]">
             Moodify
           </h1>
         </div>
 
-        {/* Illustration */}
         <div className="relative z-10 flex-1 flex flex-col items-start max-w-[512px]">
           <div className="w-full max-w-[448px] pb-12">
             <div className="relative aspect-square w-full rounded-full bg-[rgba(232,226,211,0.3)] backdrop-blur-[6px] shadow-[0px_20px_40px_rgba(125,87,0,0.06)] overflow-hidden">
@@ -69,7 +66,6 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* Tagline */}
           <div className="mb-4">
             <p className="text-[16px] font-semibold leading-[17.6px] tracking-[-0.32px]">
               <span className="text-[#e5a623]">Track your mood.</span>
@@ -78,13 +74,11 @@ export default function LoginPage() {
             </p>
           </div>
 
-          {/* Description */}
           <p className="text-[16px] text-[#504534] leading-[26px] max-w-[448px]">
             A digital sanctuary to reflect, log, and discover patterns in your daily emotional landscape.
           </p>
         </div>
 
-        {/* Footer */}
         <div className="relative z-10">
           <p className="text-[14px] font-medium text-[rgba(80,69,52,0.6)] leading-[20px]">
             © 2025 Moodify. All rights reserved.
@@ -92,41 +86,49 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* Right Panel: Login Form */}
-      <div className="flex flex-1 items-center justify-center min-h-[100dvh] lg:min-h-0 bg-[#fff9e9] px-6 py-12">
-        <div className="w-full max-w-[448px] bg-white rounded-[32px] shadow-[0px_20px_20px_rgba(125,87,0,0.06)] p-10">
-          {/* Mobile brand */}
-          <div className="flex items-center gap-2 mb-6 lg:hidden">
-            <h1 className="text-[24px] font-bold text-[#7d5700] tracking-[-1px]">
-              Moodify
-            </h1>
-          </div>
+      {/* Right Panel — Form */}
+      <div className="
+        flex flex-1 flex-col justify-center
+        min-h-[100dvh] lg:min-h-0 lg:items-center
+        bg-[#fff9e9]
+        px-5 sm:px-6
+        pt-[max(env(safe-area-inset-top),32px)] sm:pt-12 lg:pt-0
+        pb-[max(env(safe-area-inset-bottom),32px)] sm:pb-12 lg:pb-0
+      ">
+        {/* Mobile brand */}
+        <div className="lg:hidden mb-8">
+          <h1 className="text-[28px] font-bold text-[#7d5700] tracking-[-1px] leading-[32px]">
+            Moodify
+          </h1>
+          <p className="text-[13px] text-[#827562] mt-1">Your Digital Sanctuary</p>
+        </div>
 
-          {/* Header */}
-          <div className="flex flex-col gap-2 mb-8">
-            <h2 className="text-[16px] font-semibold text-[#7d5700] leading-[24px]">
+        {/* Form card — borderless on mobile, card on sm+ */}
+        <div className="w-full max-w-[448px] sm:bg-white sm:rounded-[32px] sm:shadow-[0px_20px_20px_rgba(125,87,0,0.06)] sm:p-8 lg:p-10">
+
+          <div className="mb-6">
+            <h2 className="text-[22px] sm:text-[18px] font-semibold text-[#7d5700] leading-[28px]">
               Welcome Back 👋
             </h2>
-            <p className="text-[16px] text-[#504534] leading-[24px]">
+            <p className="text-[14px] text-[#504534] leading-[22px] mt-1">
               Please enter your details to sign in.
             </p>
           </div>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3 mb-6">
+            <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3 mb-5">
               {error}
             </div>
           )}
 
-          {/* Form */}
-          <form action={handleSubmit} className="flex flex-col gap-6 pt-2">
+          <form action={handleSubmit} className="flex flex-col gap-4">
             {/* Email */}
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1.5">
               <label htmlFor="email" className="text-[12px] text-[#504534] tracking-[0.6px] uppercase leading-[16px]">
-                EMAIL
+                Email
               </label>
               <div className="relative">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#827562]">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#827562] pointer-events-none">
                   <Mail size={18} />
                 </div>
                 <input
@@ -136,19 +138,22 @@ export default function LoginPage() {
                   required
                   inputMode="email"
                   autoComplete="email"
-                  placeholder="samama@example.com"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  spellCheck={false}
+                  placeholder="you@example.com"
                   className="w-full h-[52px] bg-[#f9f3e3] rounded-full pl-12 pr-4 text-base text-[#504534] placeholder:text-[rgba(80,69,52,0.4)] focus:outline-none focus:ring-2 focus:ring-[#e5a623]/30"
                 />
               </div>
             </div>
 
             {/* Password */}
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1.5">
               <label htmlFor="password" className="text-[12px] text-[#504534] tracking-[0.6px] uppercase leading-[16px]">
-                PASSWORD
+                Password
               </label>
               <div className="relative">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#827562]">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#827562] pointer-events-none">
                   <Lock size={16} />
                 </div>
                 <input
@@ -163,7 +168,7 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[#827562] hover:text-[#504534] min-h-[44px] min-w-[44px] flex items-center justify-center"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#827562] hover:text-[#504534] min-h-[44px] min-w-[44px] flex items-center justify-center"
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -171,59 +176,50 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* Remember me & Forgot password */}
-            <div className="flex items-center justify-between px-2">
-              <label className="flex items-center gap-3 cursor-pointer">
-                <div className="w-5 h-5 rounded bg-[#f9f3e3] border border-[rgba(213,196,174,0.3)] flex items-center justify-center">
-                  <input type="checkbox" className="sr-only" />
-                </div>
-                <span className="text-[14px] text-[#504534] leading-[20px]">Remember me</span>
-              </label>
-              <button type="button" className="text-[14px] font-medium text-[#7d5700] leading-[20px] min-h-[44px] flex items-center">
+            {/* Forgot password */}
+            <div className="flex justify-end -mt-1">
+              <button
+                type="button"
+                className="text-[13px] font-medium text-[#7d5700] min-h-[44px] flex items-center"
+              >
                 Forgot Password?
               </button>
             </div>
 
-            {/* Login Button */}
+            {/* Submit */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full h-[56px] rounded-full bg-gradient-to-r from-[#7d5700] to-[#e5a623] text-white text-[18px] font-semibold leading-[28px] shadow-[0px_10px_20px_rgba(125,87,0,0.15)] hover:shadow-[0px_14px_28px_rgba(125,87,0,0.2)] active:scale-[0.98] transition-all duration-150 disabled:opacity-60 flex items-center justify-center gap-2 min-h-[44px]"
+              className="w-full h-[56px] rounded-full bg-gradient-to-r from-[#7d5700] to-[#e5a623] text-white text-[17px] font-semibold shadow-[0px_10px_20px_rgba(125,87,0,0.15)] hover:shadow-[0px_14px_28px_rgba(125,87,0,0.2)] active:scale-[0.98] transition-all duration-150 disabled:opacity-60 flex items-center justify-center gap-2"
             >
-              {loading ? 'Logging in...' : (
-                <>Login <ArrowRight size={14} /></>
-              )}
+              {loading ? 'Signing in…' : <><span>Sign In</span><ArrowRight size={16} /></>}
             </button>
           </form>
 
           {/* Divider */}
-          <div className="flex items-center justify-center gap-4 my-8">
-            <div className="w-[92px] h-px bg-[rgba(213,196,174,0.2)]" />
-            <span className="text-[12px] text-[rgba(80,69,52,0.6)] tracking-[0.6px] uppercase leading-[16px]">
-              OR CONTINUE WITH
-            </span>
-            <div className="w-[92px] h-px bg-[rgba(213,196,174,0.2)]" />
+          <div className="flex items-center gap-3 my-5">
+            <div className="flex-1 h-px bg-[rgba(213,196,174,0.35)]" />
+            <span className="text-[11px] text-[rgba(80,69,52,0.5)] tracking-[0.8px] uppercase">or</span>
+            <div className="flex-1 h-px bg-[rgba(213,196,174,0.35)]" />
           </div>
 
-          {/* Google Button */}
+          {/* Google */}
           <button
             type="button"
             onClick={handleGoogleLogin}
             disabled={loading}
-            className="w-full h-[56px] bg-[#f9f3e3] border border-[rgba(213,196,174,0.15)] rounded-full flex items-center justify-center gap-3 hover:bg-[#f4eddc] active:scale-[0.98] transition-all duration-150 disabled:opacity-60 min-h-[44px]"
+            className="w-full h-[56px] bg-[#f9f3e3] border border-[rgba(213,196,174,0.3)] rounded-full flex items-center justify-center gap-3 hover:bg-[#f4eddc] active:scale-[0.98] transition-all duration-150 disabled:opacity-60"
           >
             <GoogleIcon />
-            <span className="text-[16px] font-medium text-[#1d1c12] leading-[24px]">
-              Google
-            </span>
+            <span className="text-[15px] font-medium text-[#1d1c12]">Continue with Google</span>
           </button>
 
-          {/* Sign Up Link */}
-          <p className="text-center mt-8 text-[14px] text-[#504534] leading-[20px]">
+          {/* Sign up link */}
+          <p className="text-center mt-6 text-[14px] text-[#504534]">
             Don&apos;t have an account?{' '}
             <Link
               href="/register"
-              className="font-medium text-[#7d5700] border-b border-[rgba(125,87,0,0.2)] hover:border-[#7d5700] transition-colors"
+              className="font-semibold text-[#7d5700] hover:underline transition-colors"
             >
               Sign Up
             </Link>
