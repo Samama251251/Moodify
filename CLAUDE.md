@@ -64,6 +64,23 @@ To use Figma MCP with Claude Code:
 1. Select a frame in Figma → right click → Copy link to selection
 2. Paste into prompt: `"Implement this screen: [link]. Use Next.js + Tailwind + shadcn, mobile-first."`
 
+### Figma Screen Links — Reference Before Building Each Page
+
+> Always pull the Figma design context via MCP before implementing any of these screens.
+
+| Screen | Route | Figma Link |
+|---|---|---|
+| Log Mood | `/log-mood` | https://www.figma.com/design/wJY0Xas061NhsAkG63ZFG0/Untitled?node-id=0-390&t=QOz6qpW4cIelurOf-4 |
+| Insights | `/insights` | https://www.figma.com/design/wJY0Xas061NhsAkG63ZFG0/Untitled?node-id=0-554&t=QOz6qpW4cIelurOf-4 |
+| Year in Pixels | `/insights` (tab) | https://www.figma.com/design/wJY0Xas061NhsAkG63ZFG0/Untitled?node-id=0-765&t=QOz6qpW4cIelurOf-4 |
+| Suggestions | `/suggestions` | https://www.figma.com/design/wJY0Xas061NhsAkG63ZFG0/Untitled?node-id=0-994&t=QOz6qpW4cIelurOf-4 |
+| PHQ-9 Assessment | `/assessments/phq9` | https://www.figma.com/design/wJY0Xas061NhsAkG63ZFG0/Untitled?node-id=0-1117&t=QOz6qpW4cIelurOf-4 |
+| Assessments List | `/assessments` | https://www.figma.com/design/wJY0Xas061NhsAkG63ZFG0/Untitled?node-id=0-1233&t=QOz6qpW4cIelurOf-4 |
+| Export | `/export` | https://www.figma.com/design/wJY0Xas061NhsAkG63ZFG0/Untitled?node-id=0-1398&t=QOz6qpW4cIelurOf-4 |
+| Assessment Results | `/assessments/results` | https://www.figma.com/design/wJY0Xas061NhsAkG63ZFG0/Untitled?node-id=0-1569&t=QOz6qpW4cIelurOf-4 |
+| Settings | `/settings` | https://www.figma.com/design/wJY0Xas061NhsAkG63ZFG0/Untitled?node-id=0-1654&t=QOz6qpW4cIelurOf-4 |
+| Breathing Exercises | `/tools/breathing` | https://www.figma.com/design/wJY0Xas061NhsAkG63ZFG0/Untitled?node-id=0-3&t=QOz6qpW4cIelurOf-4 |
+
 ---
 
 ## All Features (FR = Functional Requirement)
