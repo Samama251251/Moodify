@@ -1,6 +1,11 @@
 import { generateObject } from 'ai'
-import { createAnthropic } from '@ai-sdk/anthropic'
+import { createOpenAI } from '@ai-sdk/openai'
 import { z } from 'zod'
+
+const gateway = createOpenAI({
+  baseURL: 'https://ai-gateway.vercel.sh/v1',
+  apiKey: process.env.AI_GATEWAY_API_KEY ?? '',
+})
 
 const suggestionSchema = z.object({
   suggestions: z
@@ -20,12 +25,8 @@ export async function POST(req: Request) {
   try {
     const { moodData } = await req.json()
 
-    const anthropic = createAnthropic({
-      apiKey: process.env.AI_GATEWAY_API_KEY ?? '',
-    })
-
     const { object } = await generateObject({
-      model: anthropic('claude-haiku-4-5-20251001'),
+      model: gateway('google/gemini-2.0-flash'),
       schema: suggestionSchema,
       prompt: `You are a compassionate mental wellness coach. Based on this mood data from the past 7 days, generate 1-3 personalized wellness suggestions.
 
