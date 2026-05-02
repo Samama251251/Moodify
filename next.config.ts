@@ -10,6 +10,8 @@ const pwaConfig = withPWA({
   buildExcludes: [/middleware-manifest\.json$/],
 })
 
-const nextConfig: NextConfig = {}
+const nextConfig: NextConfig = {
+  turbopack: {},
+}
 
 export default pwaConfig(nextConfig)
