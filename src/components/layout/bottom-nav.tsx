@@ -8,7 +8,7 @@ const navItems = [
   { href: '/', label: 'Home', icon: Home },
   { href: '/insights', label: 'Insights', icon: BarChart3 },
   { href: '/log-mood', label: 'Log', icon: Plus, center: true },
-  { href: '/suggestions', label: 'Tools', icon: Wrench },
+  { href: '/tools', label: 'Tools', icon: Wrench },
   { href: '/settings', label: 'Settings', icon: Settings },
 ]
 

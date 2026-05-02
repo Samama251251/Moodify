@@ -13,6 +13,7 @@
     "db:push": "drizzle-kit push"
   },
   "dependencies": {
+    "@ai-sdk/anthropic": "^3.0.74",
     "@fontsource/plus-jakarta-sans": "^5.2.8",
     "@supabase/ssr": "^0.10.2",
     "@supabase/supabase-js": "^2.104.1",

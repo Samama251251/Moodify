@@ -34,7 +34,10 @@ export async function updateSession(request: NextRequest) {
     request.nextUrl.pathname.startsWith('/register') ||
     request.nextUrl.pathname.startsWith('/auth')
 
-  if (!user && !isAuthPage) {
+  const isPublicPage =
+    request.nextUrl.pathname.startsWith('/breathing')
+
+  if (!user && !isAuthPage && !isPublicPage) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)

@@ -11,22 +11,36 @@ import {
 } from 'recharts'
 
 const ghostData = [
-  { day: 'Mon', mood: 3.2 },
-  { day: 'Tue', mood: 2.5 },
-  { day: 'Wed', mood: 3.8 },
-  { day: 'Thu', mood: 2.8 },
-  { day: 'Fri', mood: 4.2 },
-  { day: 'Sat', mood: 3.5 },
-  { day: 'Today', mood: 4.5 },
+  { day: 'Mon', avgMood: 3.2 },
+  { day: 'Tue', avgMood: 2.5 },
+  { day: 'Wed', avgMood: 3.8 },
+  { day: 'Thu', avgMood: 2.8 },
+  { day: 'Fri', avgMood: 4.2 },
+  { day: 'Sat', avgMood: 3.5 },
+  { day: 'Sun', avgMood: 4.5 },
 ]
 
-interface MoodTrendsCardProps {
-  data?: { day: string; mood: number }[]
+interface WeeklyDataPoint {
+  date: string
+  day: string
+  avgMood: number
 }
 
-export function MoodTrendsCard({ data }: MoodTrendsCardProps) {
-  const hasData = data && data.length >= 3
-  const chartData = hasData ? data : ghostData
+interface MoodTrendsCardProps {
+  weeklyData?: WeeklyDataPoint[]
+  totalEntries?: number
+}
+
+export function MoodTrendsCard({ weeklyData, totalEntries = 0 }: MoodTrendsCardProps) {
+  // Only show real data if there are at least 3 logged entries
+  const hasEnoughData = totalEntries >= 3
+  const realPoints = weeklyData?.filter((d) => d.avgMood > 0) ?? []
+  const hasData = hasEnoughData && realPoints.length >= 2
+
+  // For chart display: use real data if available, otherwise ghost
+  const chartData: { day: string; mood: number | null; date?: string; avgMood?: number }[] = hasData
+    ? (weeklyData?.map((d) => ({ day: d.day, date: d.date, avgMood: d.avgMood, mood: d.avgMood > 0 ? d.avgMood : null })) ?? ghostData.map((d) => ({ ...d, mood: d.avgMood })))
+    : ghostData.map((d) => ({ ...d, mood: d.avgMood }))
 
   return (
     <div className="rounded-[28px] bg-[#f9f3e3] shadow-[0px_20px_20px_rgba(125,87,0,0.06)] p-6 lg:p-8">
@@ -44,7 +58,7 @@ export function MoodTrendsCard({ data }: MoodTrendsCardProps) {
 
       {/* Chart container */}
       <div className="relative mt-6">
-        {/* Ghost overlay when no data */}
+        {/* Overlay when no data */}
         {!hasData && (
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-1 pointer-events-none">
             <p className="text-[14px] font-semibold text-[#504534]">
@@ -93,6 +107,7 @@ export function MoodTrendsCard({ data }: MoodTrendsCardProps) {
                 itemStyle={{ color: '#7d5700' }}
                 labelStyle={{ color: '#504534', fontWeight: 700, marginBottom: 2 }}
                 cursor={{ stroke: 'rgba(229,166,35,0.3)', strokeWidth: 1, strokeDasharray: '4 4' }}
+                formatter={(value: unknown) => [typeof value === 'number' ? value.toFixed(1) : String(value), 'Avg Mood']}
               />
               <Area
                 type="monotone"
@@ -100,6 +115,7 @@ export function MoodTrendsCard({ data }: MoodTrendsCardProps) {
                 stroke="#e5a623"
                 strokeWidth={2.5}
                 fill="url(#moodAreaGradient)"
+                connectNulls={false}
                 dot={{ fill: '#ffffff', stroke: '#e5a623', strokeWidth: 2, r: 4 }}
                 activeDot={{ r: 6, fill: '#e5a623', stroke: 'white', strokeWidth: 2 }}
               />

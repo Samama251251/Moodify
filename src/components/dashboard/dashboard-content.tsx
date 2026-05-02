@@ -5,16 +5,40 @@ import { MoodTrendsCard } from './mood-trends-card'
 import { BreathingCard } from './breathing-card'
 import { InsightsCard } from './insights-card'
 
+interface TodayEntry {
+  id: string
+  moodLevel: number
+  loggedAt: Date | null
+}
+
+interface WeeklyDataPoint {
+  date: string
+  day: string
+  avgMood: number
+}
+
 interface DashboardContentProps {
   greeting: string
   greetingIcon: string
   fullName: string
+  todayEntries?: TodayEntry[]
+  weeklyData?: WeeklyDataPoint[]
+  currentStreak?: number
+  longestStreak?: number
+  totalEntries?: number
+  recentBadges?: string[]
 }
 
 export function DashboardContent({
   greeting,
   greetingIcon,
   fullName,
+  todayEntries = [],
+  weeklyData = [],
+  currentStreak = 0,
+  longestStreak = 0,
+  totalEntries = 0,
+  recentBadges = [],
 }: DashboardContentProps) {
   return (
     <div className="px-4 sm:px-6 lg:px-10 py-6 lg:py-10 max-w-[1400px]">
@@ -31,18 +55,23 @@ export function DashboardContent({
 
       {/* Bento Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-5">
-        {/* Row 1: Mood entry + Meditation */}
-        <QuickMoodCard />
+        {/* Row 1: Mood entry + Breathing */}
+        <QuickMoodCard todayEntries={todayEntries} />
         <BreathingCard />
 
         {/* Row 2: Mood chart — full width */}
         <div className="lg:col-span-2">
-          <MoodTrendsCard />
+          <MoodTrendsCard weeklyData={weeklyData} totalEntries={totalEntries} />
         </div>
 
         {/* Row 3: Insights — full width */}
         <div className="lg:col-span-2">
-          <InsightsCard />
+          <InsightsCard
+            currentStreak={currentStreak}
+            longestStreak={longestStreak}
+            totalEntries={totalEntries}
+            recentBadges={recentBadges}
+          />
         </div>
       </div>
     </div>

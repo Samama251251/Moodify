@@ -11,6 +11,7 @@ import {
   Download,
   Settings,
   LogOut,
+  Wrench,
 } from 'lucide-react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { logout } from '@/app/(auth)/actions'
@@ -21,6 +22,7 @@ const navItems = [
   { href: '/log-mood', label: 'Log Mood', icon: PlusCircle },
   { href: '/insights', label: 'Insights', icon: BarChart3 },
   { href: '/suggestions', label: 'Suggestions', icon: Sparkles },
+  { href: '/tools', label: 'Tools', icon: Wrench },
   { href: '/assessments', label: 'Assessments', icon: ClipboardList },
   { href: '/export', label: 'Export', icon: Download },
   { href: '/settings', label: 'Settings', icon: Settings },
