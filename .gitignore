@@ -49,3 +49,8 @@ next-env.d.ts
 .env
 .mcp.json
 .claude/worktrees/
+
+# images & docs
+*.png
+*.jpg
+*.pdf

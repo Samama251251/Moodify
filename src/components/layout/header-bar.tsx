@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { ChevronDown, LogOut, Bell, Flame } from 'lucide-react'
+import { useFormStatus } from 'react-dom'
+import { ChevronDown, LogOut, Bell, Flame, Loader2 } from 'lucide-react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { logout } from '@/app/(auth)/actions'
 import type { User } from '@supabase/supabase-js'
@@ -10,6 +11,21 @@ interface HeaderBarProps {
   user: User
   fullName: string
   streak?: number
+}
+
+function SignOutBtn({ className, iconClass, label }: { className: string; iconClass: string; label?: string }) {
+  const { pending } = useFormStatus()
+  return (
+    <button type="submit" disabled={pending} className={className} aria-label="Sign out">
+      {pending ? (
+        <Loader2 className={`${iconClass} animate-spin`} />
+      ) : (
+        <LogOut className={iconClass} />
+      )}
+      {label && !pending && label}
+      {label && pending && 'Signing out…'}
+    </button>
+  )
 }
 
 export function HeaderBar({ user, fullName, streak = 0 }: HeaderBarProps) {
@@ -82,13 +98,11 @@ export function HeaderBar({ user, fullName, streak = 0 }: HeaderBarProps) {
               <div className="fixed inset-0 z-40" onClick={() => setMenuOpen(false)} />
               <div className="absolute right-0 top-full mt-2 z-50 bg-white rounded-2xl border border-[#ecddc4] shadow-[0px_8px_24px_rgba(125,87,0,0.12)] py-1.5 min-w-[160px]">
                 <form action={logout}>
-                  <button
-                    type="submit"
-                    className="flex items-center gap-2.5 w-full px-4 py-2.5 text-[13px] font-medium text-[#504534] hover:bg-[#fff9e9] transition-colors min-h-[44px] rounded-xl mx-0"
-                  >
-                    <LogOut className="size-4 text-[#827562]" />
-                    Sign Out
-                  </button>
+                  <SignOutBtn
+                    className="flex items-center gap-2.5 w-full px-4 py-2.5 text-[13px] font-medium text-[#504534] hover:bg-[#fff9e9] transition-colors min-h-[44px] rounded-xl mx-0 disabled:opacity-60"
+                    iconClass="size-4 text-[#827562]"
+                    label="Sign Out"
+                  />
                 </form>
               </div>
             </>
@@ -97,13 +111,10 @@ export function HeaderBar({ user, fullName, streak = 0 }: HeaderBarProps) {
 
         {/* Sign-out icon — mobile only */}
         <form action={logout} className="lg:hidden">
-          <button
-            type="submit"
-            className="flex items-center justify-center size-10 rounded-full hover:bg-[#f9f3e3] transition-colors min-h-[44px] min-w-[44px]"
-            aria-label="Sign out"
-          >
-            <LogOut className="size-5 text-[#7d5700]" />
-          </button>
+          <SignOutBtn
+            className="flex items-center justify-center size-10 rounded-full hover:bg-[#f9f3e3] transition-colors min-h-[44px] min-w-[44px] disabled:opacity-60"
+            iconClass="size-5 text-[#7d5700]"
+          />
         </form>
       </div>
     </header>

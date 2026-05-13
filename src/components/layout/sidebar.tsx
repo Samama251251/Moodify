@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useState } from 'react'
 import {
   Home,
   PlusCircle,
@@ -12,6 +13,7 @@ import {
   Settings,
   LogOut,
   Wrench,
+  Loader2,
 } from 'lucide-react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { logout } from '@/app/(auth)/actions'
@@ -31,6 +33,7 @@ const navItems = [
 
 export function Sidebar({ user }: { user: User }) {
   const pathname = usePathname()
+  const [signingOut, setSigningOut] = useState(false)
 
   const fullName =
     user.user_metadata?.full_name?.split(' ')[0] ??
@@ -100,15 +103,21 @@ export function Sidebar({ user }: { user: User }) {
           </span>
           <button
             type="button"
+            disabled={signingOut}
             onClick={async () => {
+              setSigningOut(true)
               mp.track('sign_out')
               await logout()
             }}
-            className="flex items-center justify-center size-8 rounded-full hover:bg-[#f9f3e3] transition-colors min-h-[44px] min-w-[44px]"
+            className="flex items-center justify-center size-8 rounded-full hover:bg-[#f9f3e3] transition-colors min-h-[44px] min-w-[44px] disabled:opacity-60"
             aria-label="Sign out"
             title="Sign out"
           >
-            <LogOut className="size-4 text-[#827562]" />
+            {signingOut ? (
+              <Loader2 className="size-4 text-[#827562] animate-spin" />
+            ) : (
+              <LogOut className="size-4 text-[#827562]" />
+            )}
           </button>
         </div>
       </div>
